@@ -19,7 +19,7 @@ body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 17p
 body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.55;background-image:radial-gradient(circle,var(--flake) 2px,transparent 2.5px),radial-gradient(circle,var(--flake) 1.2px,transparent 1.8px);background-size:97px 97px,151px 151px;background-position:0 0,40px 60px;animation:snow 30s linear infinite}
 @keyframes snow{to{background-position:30px 97px,10px 211px}}
 .cane{height:12px;background:repeating-linear-gradient(45deg,var(--accent) 0 14px,#fff 14px 28px)}
-main{position:relative;max-width:520px;margin:0 auto;padding:24px 18px 56px}
+main{position:relative;max-width:520px;margin:0 auto;padding:24px 18px 100px}
 h1,h2,.fun{font-family:"Fredoka","Nunito",system-ui,sans-serif}
 h1{font-size:clamp(34px,10vw,46px);line-height:1.05;margin:0 0 8px;font-weight:700;word-break:break-word}
 h2{font-size:22px;margin:30px 0 8px;font-weight:700}
@@ -77,12 +77,16 @@ dt{color:var(--muted)}dd{margin:0;font-weight:700;word-break:break-word}
 .qa p{margin:0 0 2px;color:var(--ink)}
 .qa .hint{margin:0 0 6px}
 .qa .row{margin:4px 0 8px;flex-wrap:nowrap}
+.music{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;width:56px;height:56px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:var(--ink);font-size:26px;line-height:1;box-shadow:0 4px 0 var(--line);display:flex;align-items:center;justify-content:center}
+.music[aria-pressed="true"]{background:var(--accent);border-color:var(--accent-d);box-shadow:0 4px 0 var(--accent-d)}
+.music:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
 @media (prefers-reduced-motion:reduce){.tag,body::before{animation:none}}
 </style>
 </head>
 <body>
 <div class="cane"></div>
 <main id="app"></main>
+<button class="music" id="music" type="button" aria-pressed="false" aria-label="Música de fundo" title="Música de fundo">🔇</button>
 <script>
 (() => {
   "use strict";
@@ -760,6 +764,66 @@ dt{color:var(--muted)}dd{margin:0;font-weight:700;word-break:break-word}
   window.addEventListener("hashchange", readHash);
   if (HOSTED && "serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1"))
     navigator.serviceWorker.register("sw.js").catch(() => {});
+})();
+
+/* música de fundo: caixinha de música tocando "Jingle Bells" (domínio público), gerada no navegador */
+(() => {
+  "use strict";
+  const KEY = "amigo-secreto-musica", btn = document.getElementById("music");
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) { btn.hidden = true; return; }
+  const F = { C3: 130.81, D3: 146.83, F3: 174.61, G3: 196.0, C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99 };
+  const A = [["E5",1],["E5",1],["E5",2],["E5",1],["E5",1],["E5",2],["E5",1],["G5",1],["C5",1.5],["D5",.5],["E5",4]];
+  const MEL = [].concat(
+    A, [["F5",1],["F5",1],["F5",1.5],["F5",.5],["F5",1],["E5",1],["E5",1],["E5",.5],["E5",.5],["E5",1],["D5",1],["D5",1],["E5",1],["D5",2],["G5",2]],
+    A, [["F5",1],["F5",1],["F5",1.5],["F5",.5],["F5",1],["E5",1],["E5",1],["E5",.5],["E5",.5],["G5",1],["G5",1],["F5",1],["D5",1],["C5",4]]);
+  const BASS = ["C3","C3","C3","C3","F3","C3","D3","G3","C3","C3","C3","C3","F3","C3","G3","C3"];
+  const BEAT = 0.42, LOOP = 66;                    /* 64 tempos de música + 2 de pausa */
+  let ctx = null, out = null, on = false, t0 = 0, next = 0, timer = null;
+  try { on = localStorage.getItem(KEY) === "1"; } catch (e) {}
+
+  function note(freq, when, dur, vol) {
+    const o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "triangle"; o.frequency.value = freq; o2.type = "sine"; o2.frequency.value = freq * 2;
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.exponentialRampToValueAtTime(vol, when + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + Math.max(0.35, dur * 0.95) + 0.4);
+    o.connect(g); o2.connect(g); g.connect(out);
+    const end = when + dur + 0.5;
+    o.start(when); o2.start(when); o.stop(end); o2.stop(end);
+  }
+  /* agenda as notas com antecedência para o ritmo não falhar */
+  function schedule() {
+    const horizon = ctx.currentTime + 0.6;
+    while (true) {
+      const loop = Math.floor(next / LOOP), pos = next - loop * LOOP;
+      const at = t0 + next * BEAT;
+      if (at > horizon) break;
+      let beat = 0, step = null;
+      for (const [n, d] of MEL) { if (Math.abs(beat - pos) < 1e-6) { step = [n, d]; break; } beat += d; }
+      if (step) note(F[step[0]], at, step[1] * BEAT, 0.5);
+      if (pos < 64 && pos % 4 === 0) note(F[BASS[pos / 4]], at, 3.5 * BEAT, 0.28);
+      next += 0.5;                                  /* menor duração da melodia: meio tempo */
+    }
+  }
+  function start() {
+    if (!ctx) {
+      ctx = new AC(); out = ctx.createGain(); out.gain.value = 0.09; out.connect(ctx.destination);
+    }
+    ctx.resume();
+    if (!timer) { t0 = ctx.currentTime + 0.1; next = 0; timer = setInterval(schedule, 150); schedule(); }
+  }
+  function stop() { clearInterval(timer); timer = null; if (ctx) { const c = ctx; ctx = null; out = null; c.close().catch(() => {}); } }
+  function paint() { btn.setAttribute("aria-pressed", on ? "true" : "false"); btn.textContent = on ? "🎵" : "🔇"; btn.title = on ? "Desligar música" : "Ligar música de fundo"; }
+  btn.addEventListener("click", () => {
+    on = !on; try { localStorage.setItem(KEY, on ? "1" : "0"); } catch (e) {}
+    on ? start() : stop(); paint();
+  });
+  /* o navegador só deixa tocar som depois de um toque: se estava ligada, volta no primeiro toque */
+  const first = e => { if (e.target === btn) return; document.removeEventListener("pointerdown", first, true); if (on && !timer) start(); };
+  document.addEventListener("pointerdown", first, true);
+  document.addEventListener("visibilitychange", () => { if (!ctx) return; document.hidden ? ctx.suspend() : (on && ctx.resume()); });
+  paint();
 })();
 </script>
 </body>
