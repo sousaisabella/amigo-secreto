@@ -77,10 +77,11 @@ input[type=date]{min-height:48px}
 (function(){
   var KEY="amigo-secreto-natal-v4";
   var BASE=location.href.split("#")[0];
+  var DB="https://amigo-secreto-64e8b-default-rtdb.firebaseio.com";
   var HOSTED=/^https?:\/\//.test(BASE);
   var L={db:"",room:"",org:false,pid:"",ex:{},links:null,info:null};
   var D=null,MEM={},dr={n:"",w:"",d:"",p:"",f:""};
-  var msg="",rec=null,bad=false,shown=false,loading=location.hash.length>1,view="home";
+  var stale=false,msg="",rec=null,bad=false,shown=false,loading=location.hash.length>1,view="home";
   var app=document.getElementById("app");
 
   function load(){try{var r=localStorage.getItem(KEY);if(r){var d=JSON.parse(r);if(d&&typeof d==="object")L=Object.assign(L,d);}}catch(e){}}
@@ -134,8 +135,10 @@ input[type=date]{min-height:48px}
     return fetch(L.db+"/rooms/"+L.room+path+".json",{method:method||"GET",headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)})
       .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});
   }
+  var seq=0;
   function poll(){
-    return api("").then(function(d){D=d||{};msg="";if(!typing())render();}).catch(function(){msg="Sem conexão com o banco. Tentando de novo…";if(!D)D={};if(!typing())render();});
+    var my=++seq;
+    return api("").then(function(d){if(my!==seq)return;D=d||{};msg="";if(!typing())render();}).catch(function(){msg="Sem conexão com o banco. Tentando de novo…";if(!D)D={};if(!typing())render();});
   }
   function typing(){var a=document.activeElement;return a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA");}
   function write(path,method,body,after){return api(path,method,body).then(function(){if(after)after();return poll();}).catch(function(){msg="Não consegui salvar. Confira sua conexão.";render();});}
@@ -147,20 +150,21 @@ input[type=date]{min-height:48px}
   }
   async function readHash(){
     var t=location.hash.replace("#","");
-    rec=null;bad=false;shown=false;
+    rec=null;bad=false;shown=false;stale=false;
     if(!t){loading=false;render(true);return;}
     loading=true;render(true);
     if(t.charAt(0)==="x")rec=await dec(t);
     else if(t.charAt(0)==="j"){try{join(unpack(t.slice(1)));}catch(e){bad=true;}}
     else bad=true;
     if(t.charAt(0)==="x")bad=!rec;
+    if(rec&&rec.db&&DBRE.test(rec.db)){try{var rr=await fetch(rec.db+"/rooms/"+rec.rm+"/meta/round.json");if(rr.ok){var cur=await rr.json();if(cur&&cur!==rec.rd)stale=true;}}catch(e){}}
     loading=false;render(true);if(L.db&&!rec&&!bad)poll();
   }
 
   /* configuração (organizador) */
   async function connect(){
-    var u=document.getElementById("dburl").value.trim().replace(/\/+$/,"");
-    if(!DBRE.test(u)){msg="Endereço inválido. Ele termina em firebaseio.com ou firebasedatabase.app.";render();return;}
+    var u=DB;
+    if(!DBRE.test(u)){msg="Endereço do banco inválido.";render();return;}
     var room=rid(6);
     try{
       var r=await fetch(u+"/rooms/"+room+"/meta.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({v:""})});
@@ -172,15 +176,9 @@ input[type=date]{min-height:48px}
   function leave(){L={db:"",room:"",org:false,pid:"",ex:{},links:null,info:null};D=null;save();render(true);}
 
   function setupView(){
-    var inp=h("input",{id:"dburl",type:"text",placeholder:"https://seu-projeto-default-rtdb.firebaseio.com",autocomplete:"off"});
     return [
       h("h1",{},"🎄 Amigo Secreto"),
-      h("p",{},"Para os amigos adicionarem dicas, sugerirem e votarem direto no mural, o app precisa de um banco de dados gratuito. Faça isso uma vez, em uns 5 minutos:"),
-      h("ol",{class:"steps"},
-        h("li",{},"Entre em console.firebase.google.com e crie um projeto (pode desativar o Google Analytics)."),
-        h("li",{},"Vá em Build > Realtime Database > Criar banco de dados, e escolha o modo de teste."),
-        h("li",{},"Copie o endereço que aparece no topo da tela do banco e cole abaixo.")),
-      h("label",{class:"lab"},"Endereço do Realtime Database",inp),
+      h("p",{},"Crie a festa, convide a galera e deixe todo mundo adicionar dicas e votar no mural."),
       h("p",{class:"err","aria-live":"polite"},msg),
       h("button",{class:"btn wide",type:"button",onclick:connect},"Criar a festa"),
       h("button",{class:"btn alt wide",type:"button",onclick:demo},"Ver demonstração, sem banco")
@@ -246,8 +244,8 @@ input[type=date]{min-height:48px}
     if(!ok){msg="Com essas restrições não existe sorteio possível. Remova alguma.";render();return;}
     var by={},a={},info={v:(D.meta&&D.meta.v)||"",d:lead("d"),l:lead("p"),f:lead("f")};
     P.forEach(function(p){by[p.id]=p;if(p.w)a[p.n]=p.w;});
-    var links={};
-    for(var i=0;i<P.length;i++)links[P[i].n]=await enc({g:P[i].n,r:by[ok[i]].n,w:by[ok[i]].w,a:a,v:info.v,d:info.d,l:info.l,f:info.f});
+    var links={},round=rid(4);try{await api("/meta/round","PUT",round);}catch(e){msg="Não consegui registrar o sorteio. Confira a conexão.";render();return;}
+    for(var i=0;i<P.length;i++)links[P[i].n]=await enc({g:P[i].n,r:by[ok[i]].n,w:by[ok[i]].w,a:a,v:info.v,d:info.d,l:info.l,f:info.f,db:L.db,rm:L.room,rd:round});
     L.links=links;L.info=info;msg="";save();render(true);
   }
 
@@ -274,7 +272,8 @@ input[type=date]{min-height:48px}
         var n=dr.n.replace(/\s+/g," ").trim();
         if(!n){msg="Digite seu nome.";render();return;}
         if(entries(D.people).some(function(e){return e[1].n.toLowerCase()===n.toLowerCase();})){msg=n+" já está no mural.";render();return;}
-        write("/people/"+L.pid,"PUT",{n:n,w:dr.w.trim()},function(){dr.w="";});}},"Entrar no mural")
+        write("/people/"+L.pid,"PUT",{n:n,w:dr.w.trim()},function(){dr.w="";});}},"Entrar no mural"),
+      Object.keys(D.people||{}).length?[h("p",{class:"hint"},"Já entrou por outro aparelho? Toque no seu nome:"),h("div",{class:"row"},entries(D.people).map(function(e){return h("button",{class:"btn alt",type:"button",onclick:function(){L.pid=e[0];save();render();}},e[1].n);}))]:null
     ];
   }
 
@@ -330,6 +329,7 @@ input[type=date]{min-height:48px}
       k.map(function(n){return h("p",{},h("b",{},n+": "),h("span",{},a[n]));}));
   }
   function recView(){
+    if(stale)return [h("h1",{},"Sorteio refeito"),h("p",{},"O organizador refez o sorteio, então este link não vale mais. Peça o link novo a ele.")];
     if(!shown)return [
       h("p",{class:"hand"},"🎄 Amigo secreto de"),h("div",{class:"who"},rec.g),
       h("p",{},"Só "+rec.g+" deve ver a próxima tela. Confira se ninguém está olhando."),
