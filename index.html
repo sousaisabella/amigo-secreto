@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amigo secreto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@400;700&display=swap">
+<style>
+:root{--bg:#F4F9F5;--surface:#FFFFFF;--ink:#173B2E;--muted:#587267;--line:#CBE0D3;--accent:#D62839;--accent-d:#9E1C2A;--gold:#F4B942;--flake:#BFD9CC;--ok:#1F7A4F;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F3D2E;--surface:#17503D;--ink:#FFF8EC;--muted:#B5D1C4;--line:#2F7059;--accent:#E8394B;--accent-d:#A81F2E;--flake:#FFFFFF;--ok:#8BE0AE;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F3D2E;--surface:#17503D;--ink:#FFF8EC;--muted:#B5D1C4;--line:#2F7059;--accent:#E8394B;--accent-d:#A81F2E;--flake:#FFFFFF;--ok:#8BE0AE;color-scheme:dark}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 17px/1.5 "Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;position:relative}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.55;background-image:radial-gradient(circle,var(--flake) 2px,transparent 2.5px),radial-gradient(circle,var(--flake) 1.2px,transparent 1.8px);background-size:97px 97px,151px 151px;background-position:0 0,40px 60px;animation:snow 30s linear infinite}
+@keyframes snow{to{background-position:30px 97px,10px 211px}}
+.cane{height:12px;background:repeating-linear-gradient(45deg,var(--accent) 0 14px,#fff 14px 28px)}
+main{position:relative;max-width:520px;margin:0 auto;padding:24px 18px 56px}
+h1,h2,.fun{font-family:"Fredoka","Nunito",system-ui,sans-serif}
+h1{font-size:clamp(34px,10vw,46px);line-height:1.05;margin:0 0 8px;font-weight:700}
+h2{font-size:22px;margin:30px 0 8px;font-weight:700}
+p{margin:0 0 14px;color:var(--muted)}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+input[type=text],textarea{width:100%;min-height:48px;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--surface)}
+textarea{resize:vertical}
+.btn{min-height:50px;padding:0 22px;border-radius:999px;border:0;background:var(--accent);color:#fff;font:700 17px "Fredoka","Nunito",sans-serif;box-shadow:0 4px 0 var(--accent-d)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--accent-d)}
+.btn.alt{background:var(--surface);color:var(--ink);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.wide{width:100%;margin-top:22px}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;min-height:44px}
+.err{min-height:22px;margin:6px 0 0;color:var(--accent);font-size:15px;font-weight:700}
+.lab{display:block;margin-bottom:10px;color:var(--muted);font-size:15px;font-weight:700}
+.lab input{margin-top:4px;font-weight:400}
+ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:12px}
+.card{background:var(--surface);border-radius:18px;padding:14px 14px 10px 18px;border:2px solid var(--line);border-left:10px solid var(--c)}
+.card:nth-child(3n+1){--c:var(--accent);transform:rotate(-.6deg)}.card:nth-child(3n+2){--c:var(--gold);transform:rotate(.5deg)}.card:nth-child(3n){--c:#2E9A6B}
+.card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.card .top b{font:700 20px "Fredoka",sans-serif}
+.x{width:44px;height:44px;border:0;background:none;color:var(--muted);font-size:24px;border-radius:10px}
+.card details{margin-top:6px}
+summary{min-height:40px;display:flex;align-items:center;color:var(--muted);font-size:15px;font-weight:700;cursor:pointer}
+.chk{display:flex;align-items:center;gap:10px;min-height:40px;font-size:16px}
+.chk input{width:20px;height:20px}
+.mini{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:10px 14px}
+.mini b{font:700 19px "Fredoka",sans-serif}
+.pick{width:100%;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:18px;min-height:58px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;font:700 20px "Fredoka",sans-serif}
+.seen{color:var(--ok);font-size:15px;font-weight:700}
+.hand{font-size:15px;color:var(--muted);margin:0 0 4px;font-weight:700}
+.who{font:700 clamp(38px,12vw,56px)/1.05 "Fredoka",sans-serif;margin:0 0 22px;word-break:break-word}
+.tag{position:relative;background:#F6E7BD;color:#2E2208;padding:44px 28px 34px;border-radius:8px;clip-path:polygon(0 0,84% 0,100% 16%,100% 100%,0 100%);animation:drop .6s ease-out}
+.tag::before{content:"";position:absolute;top:20px;right:30px;width:14px;height:14px;border-radius:50%;background:var(--bg)}
+.tag small{display:block;font-size:16px;color:#6B5420;margin-bottom:6px;font-weight:700}
+.tag strong{display:block;font:700 clamp(40px,13vw,60px)/1.05 "Fredoka",sans-serif;word-break:break-word}
+@keyframes drop{from{transform:rotate(-6deg) translateY(-16px);opacity:0}to{transform:none;opacity:1}}
+dl{margin:20px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px}
+dt{color:var(--muted)}dd{margin:0;font-weight:700}
+.wall p{margin:0 0 6px;color:var(--ink)}.wall span{color:var(--muted)}
+.done{color:var(--ok);font-weight:700}
+.foot{margin-top:28px}
+@media (prefers-reduced-motion:reduce){.tag,body::before{animation:none}}
+
+.hint{font-size:15px;color:var(--muted);margin:6px 0 0}
+.steps{margin:0 0 16px;padding-left:22px;color:var(--muted)}
+.steps li{margin-bottom:6px}
+input[type=date]{min-height:48px}
+</style>
+</head>
+<body>
+<div class="cane"></div>
+<main id="app"></main>
+<script>
+(function(){
+  var KEY="amigo-secreto-natal-v4";
+  var BASE=location.href.split("#")[0];
+  var HOSTED=/^https?:\/\//.test(BASE);
+  var L={db:"",room:"",org:false,pid:"",ex:{},links:null,info:null};
+  var D=null,MEM={},dr={n:"",w:"",d:"",p:"",f:""};
+  var msg="",rec=null,bad=false,shown=false,loading=location.hash.length>1,view="home";
+  var app=document.getElementById("app");
+
+  function load(){try{var r=localStorage.getItem(KEY);if(r){var d=JSON.parse(r);if(d&&typeof d==="object")L=Object.assign(L,d);}}catch(e){}}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(L));}catch(e){}}
+  function rid(n){return hx(crypto.getRandomValues(new Uint8Array(n)));}
+
+  function h(tag,attrs){
+    var e=document.createElement(tag);attrs=attrs||{};
+    Object.keys(attrs).forEach(function(k){
+      var v=attrs[k];
+      if(v===null||v===undefined)return;
+      if(k==="class")e.className=v;
+      else if(k.indexOf("on")===0)e.addEventListener(k.slice(2),v);
+      else e.setAttribute(k,v);
+    });
+    for(var i=2;i<arguments.length;i++)[].concat(arguments[i]).forEach(function(c){if(c!=null&&c!==false)e.append(c);});
+    return e;
+  }
+
+  function hx(b){return Array.from(b,function(x){return ("0"+x.toString(16)).slice(-2);}).join("");}
+  function ub(s){var o=new Uint8Array(s.length/2);for(var i=0;i<o.length;i++)o[i]=parseInt(s.substr(i*2,2),16);return o;}
+  function pack(o){return hx(new TextEncoder().encode(JSON.stringify(o)));}
+  function unpack(s){return JSON.parse(new TextDecoder().decode(ub(s)));}
+  async function enc(obj){
+    var k=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+    var key=await crypto.subtle.importKey("raw",k,"AES-GCM",false,["encrypt"]);
+    var ct=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv:iv},key,new TextEncoder().encode(JSON.stringify(obj))));
+    return "x"+hx(k)+hx(iv)+hx(ct);
+  }
+  async function dec(t){
+    try{
+      if(t.length<90||t.length%2===0)return null;
+      var s=t.slice(1),key=await crypto.subtle.importKey("raw",ub(s.slice(0,32)),"AES-GCM",false,["decrypt"]);
+      var pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:ub(s.slice(32,56))},key,ub(s.slice(56)));
+      var o=JSON.parse(new TextDecoder().decode(pt));return o&&o.g&&o.r?o:null;
+    }catch(e){return null;}
+  }
+
+  /* banco: Firebase Realtime Database (REST) ou memória (demonstração) */
+  function mem(path,method,body){
+    var parts=path.split("/").filter(Boolean),o=MEM,x=MEM,i;
+    if(method==="GET"){for(i=0;i<parts.length;i++)x=x&&x[parts[i]];return x===undefined?null:JSON.parse(JSON.stringify(x));}
+    for(i=0;i<parts.length-1;i++)o=o[parts[i]]=o[parts[i]]||{};
+    var k=parts[parts.length-1];
+    if(method==="DELETE"){delete o[k];return null;}
+    if(method==="POST"){var id="k"+Date.now().toString(36)+Math.floor(Math.random()*1e4);o[id]=body;return {name:id};}
+    o[k]=body;return body;
+  }
+  function api(path,method,body){
+    if(L.db==="demo")return Promise.resolve(mem(path,method||"GET",body));
+    return fetch(L.db+"/rooms/"+L.room+path+".json",{method:method||"GET",headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)})
+      .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});
+  }
+  function poll(){
+    return api("").then(function(d){D=d||{};msg="";if(!typing())render();}).catch(function(){msg="Sem conexão com o banco. Tentando de novo…";if(!D)D={};if(!typing())render();});
+  }
+  function typing(){var a=document.activeElement;return a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA");}
+  function write(path,method,body,after){return api(path,method,body).then(function(){if(after)after();return poll();}).catch(function(){msg="Não consegui salvar. Confira sua conexão.";render();});}
+
+  var DBRE=/^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebaseio\.com|firebasedatabase\.app)$/;
+  function join(o){
+    if(!o||!DBRE.test(o.u||"")||!/^[0-9a-f]{6,40}$/.test(o.r||"")){bad=true;return;}
+    if(L.room!==o.r||L.db!==o.u){L={db:o.u,room:o.r,org:false,pid:rid(8),ex:{},links:null,info:null};save();D=null;}
+  }
+  async function readHash(){
+    var t=location.hash.replace("#","");
+    rec=null;bad=false;shown=false;
+    if(!t){loading=false;render(true);return;}
+    loading=true;render(true);
+    if(t.charAt(0)==="x")rec=await dec(t);
+    else if(t.charAt(0)==="j"){try{join(unpack(t.slice(1)));}catch(e){bad=true;}}
+    else bad=true;
+    if(t.charAt(0)==="x")bad=!rec;
+    loading=false;render(true);if(L.db&&!rec&&!bad)poll();
+  }
+
+  /* configuração (organizador) */
+  async function connect(){
+    var u=document.getElementById("dburl").value.trim().replace(/\/+$/,"");
+    if(!DBRE.test(u)){msg="Endereço inválido. Ele termina em firebaseio.com ou firebasedatabase.app.";render();return;}
+    var room=rid(6);
+    try{
+      var r=await fetch(u+"/rooms/"+room+"/meta.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({v:""})});
+      if(!r.ok)throw new Error(r.status);
+    }catch(e){msg="Não consegui conectar. Confira o endereço e se o banco está em modo de teste.";render();return;}
+    L={db:u,room:room,org:true,pid:rid(8),ex:{},links:null,info:null};msg="";D=null;save();render(true);poll();
+  }
+  function demo(){MEM={};L={db:"demo",room:"demo",org:true,pid:rid(8),ex:{},links:null,info:null};D=null;save();render(true);poll();}
+  function leave(){L={db:"",room:"",org:false,pid:"",ex:{},links:null,info:null};D=null;save();render(true);}
+
+  function setupView(){
+    var inp=h("input",{id:"dburl",type:"text",placeholder:"https://seu-projeto-default-rtdb.firebaseio.com",autocomplete:"off"});
+    return [
+      h("h1",{},"🎄 Amigo Secreto"),
+      h("p",{},"Para os amigos adicionarem dicas, sugerirem e votarem direto no mural, o app precisa de um banco de dados gratuito. Faça isso uma vez, em uns 5 minutos:"),
+      h("ol",{class:"steps"},
+        h("li",{},"Entre em console.firebase.google.com e crie um projeto (pode desativar o Google Analytics)."),
+        h("li",{},"Vá em Build > Realtime Database > Criar banco de dados, e escolha o modo de teste."),
+        h("li",{},"Copie o endereço que aparece no topo da tela do banco e cole abaixo.")),
+      h("label",{class:"lab"},"Endereço do Realtime Database",inp),
+      h("p",{class:"err","aria-live":"polite"},msg),
+      h("button",{class:"btn wide",type:"button",onclick:connect},"Criar a festa"),
+      h("button",{class:"btn alt wide",type:"button",onclick:demo},"Ver demonstração, sem banco")
+    ];
+  }
+
+  /* sala */
+  function entries(o){return Object.keys(o||{}).map(function(k){return [k,o[k]];});}
+  function me(){return D&&D.people&&D.people[L.pid];}
+  function fmtDate(s){var p=String(s).split("-");if(p.length!==3)return s;return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString("pt-BR",{weekday:"short",day:"2-digit",month:"short"});}
+  function opts(key){
+    return entries(D[key]).map(function(e){var vs=(D.votes&&D.votes[key]&&D.votes[key][e[0]])||{};return {k:e[0],t:e[1].t,n:Object.keys(vs).length,mine:!!vs[L.pid]};})
+      .sort(function(a,b){return b.n-a.n||(a.k<b.k?-1:1);});
+  }
+  function lead(key){var o=opts(key);return o.length&&o[0].n>0?(key==="d"?fmtDate(o[0].t):o[0].t):"";}
+
+  function pollSection(title,key,type,ph,hint){
+    var list=opts(key),top=list.length&&list[0].n>0?list[0].k:null,ok=!!me();
+    var inp=h("input",{type:type,value:dr[key]||"",placeholder:ph,maxlength:"60","aria-label":title,oninput:function(e){dr[key]=e.target.value;}});
+    return [
+      h("h2",{},title),
+      h("ul",{},list.map(function(o){
+        return h("li",{class:"mini"},
+          h("b",{},(o.k===top?"🏆 ":"")+(key==="d"?fmtDate(o.t):o.t)),
+          h("span",{class:"row",style:"align-items:center"},
+            h("span",{class:"seen"},o.n+(o.n===1?" voto":" votos")),
+            h("button",{class:"btn"+(o.mine?"":" alt"),type:"button",disabled:ok?null:"disabled",onclick:function(){write("/votes/"+key+"/"+o.k+"/"+L.pid,o.mine?"DELETE":"PUT",true);}},o.mine?"✓ Meu voto":"Votar"),
+            L.org?h("button",{class:"x",type:"button","aria-label":"Remover opção",onclick:function(){write("/"+key+"/"+o.k,"DELETE");}},"×"):null));
+      })),
+      list.length?null:h("p",{class:"hint"},hint),
+      h("div",{class:"row",style:"flex-wrap:nowrap;margin-top:10px"},inp,
+        h("button",{class:"btn",type:"button",disabled:ok?null:"disabled",onclick:function(){
+          var v=inp.value.trim();if(!v)return;
+          if(list.some(function(o){return String(o.t).toLowerCase()===v.toLowerCase();})){dr[key]="";inp.value="";return;}
+          write("/"+key,"POST",{t:v,by:me().n},function(){dr[key]="";});}},"Sugerir"))
+    ];
+  }
+
+  function warn(){return HOSTED?null:h("p",{class:"err",style:"margin:0 0 14px"},"⚠️ Você está vendo uma prévia do arquivo, então os convites e links não funcionam aqui. Hospede o index.html (Netlify Drop) e abra pelo endereço dele.");}
+  function wa(m){window.open("https://wa.me/?text="+encodeURIComponent(m),"_blank","noopener");}
+  function copy(text,btn,box){
+    function fb(){if(box.querySelector("input.cp"))return;var i=h("input",{type:"text",class:"cp",readonly:"readonly",value:text.replace(/\n/g," "),"aria-label":"Texto para copiar",style:"margin-top:8px"});box.append(i);i.focus();i.select();}
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(function(){btn.textContent="Copiado ✓";},fb);else fb();
+  }
+  function inviteMsg(){return "🎄 Amigo secreto de Natal! Entre no mural: adicione sua dica de presente, vote no melhor dia e sugira local e comida:\n"+BASE+"#j"+pack({u:L.db,r:L.room});}
+  function eventText(){
+    var i=L.info||{},t=[];
+    if(i.v)t.push("Valor sugerido: "+i.v);
+    if(i.d)t.push("Data: "+i.d);
+    if(i.l)t.push("Local: "+i.l);
+    if(i.f)t.push("Comida: "+i.f);
+    return t.join("\n");
+  }
+  function message(name){var e=eventText();return "🎁 Amigo secreto de Natal!\nOi, "+name+"! Descubra quem você tirou neste link (só você deve abrir):\n"+BASE+"#"+L.links[name]+(e?"\n\n"+e:"");}
+
+  function blocked(a,b){return a===b||(L.ex[a]||[]).indexOf(b)>-1||(L.ex[b]||[]).indexOf(a)>-1;}
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var b=new Uint32Array(1);crypto.getRandomValues(b);var j=b[0]%(i+1),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  async function draw(){
+    var seen={},P=entries(D.people).map(function(e){return {id:e[0],n:e[1].n,w:e[1].w||""};});
+    P.forEach(function(p){var b=p.n,i=2;while(seen[p.n.toLowerCase()])p.n=b+" ("+(i++)+")";seen[p.n.toLowerCase()]=1;});
+    var ids=P.map(function(p){return p.id;}),ok=null;
+    for(var t=0;t<5000&&!ok;t++){var q=shuffle(ids),good=true;for(var i=0;i<ids.length;i++)if(blocked(ids[i],q[i])){good=false;break;}if(good)ok=q;}
+    if(!ok){msg="Com essas restrições não existe sorteio possível. Remova alguma.";render();return;}
+    var by={},a={},info={v:(D.meta&&D.meta.v)||"",d:lead("d"),l:lead("p"),f:lead("f")};
+    P.forEach(function(p){by[p.id]=p;if(p.w)a[p.n]=p.w;});
+    var links={};
+    for(var i=0;i<P.length;i++)links[P[i].n]=await enc({g:P[i].n,r:by[ok[i]].n,w:by[ok[i]].w,a:a,v:info.v,d:info.d,l:info.l,f:info.f});
+    L.links=links;L.info=info;msg="";save();render(true);
+  }
+
+  function personCard(e){
+    var id=e[0],p=e[1],isMe=id===L.pid;
+    var others=entries(D.people).filter(function(o){return o[0]!==id;});
+    return h("li",{class:"card"},
+      h("div",{class:"top"},h("b",{},"🎁 "+p.n+(isMe?" (você)":"")),
+        L.org&&!isMe?h("button",{class:"x",type:"button","aria-label":"Remover "+p.n,onclick:function(){write("/people/"+id,"DELETE");}},"×"):null),
+      isMe?h("input",{type:"text",value:p.w||"",placeholder:"Sua dica de presente","aria-label":"Sua dica de presente",maxlength:"120",onchange:function(ev){write("/people/"+id+"/w","PUT",ev.target.value.trim());}})
+          :h("p",{style:"margin:0;color:var(--ink)"},p.w||"Ainda sem dica"),
+      L.org&&others.length?h("details",{},h("summary",{},"🚫 Não pode tirar…"),
+        others.map(function(o){return h("label",{class:"chk"},h("input",{type:"checkbox",checked:(L.ex[id]||[]).indexOf(o[0])>-1?"checked":null,onchange:function(){var l=L.ex[id]||[],i=l.indexOf(o[0]);if(i>-1)l.splice(i,1);else l.push(o[0]);L.ex[id]=l;save();}}),o[1].n);})):null
+    );
+  }
+
+  function joinBlock(){
+    if(me())return null;
+    return [
+      h("h2",{},"👋 Entre no mural"),
+      h("label",{class:"lab"},"Seu nome",h("input",{type:"text",value:dr.n,maxlength:"30",autocomplete:"name",oninput:function(e){dr.n=e.target.value;}})),
+      h("label",{class:"lab"},"Sua dica de presente",h("input",{type:"text",value:dr.w,maxlength:"120",placeholder:"Ex.: livros, café, plantas",oninput:function(e){dr.w=e.target.value;}})),
+      h("button",{class:"btn",type:"button",onclick:function(){
+        var n=dr.n.replace(/\s+/g," ").trim();
+        if(!n){msg="Digite seu nome.";render();return;}
+        if(entries(D.people).some(function(e){return e[1].n.toLowerCase()===n.toLowerCase();})){msg=n+" já está no mural.";render();return;}
+        write("/people/"+L.pid,"PUT",{n:n,w:dr.w.trim()},function(){dr.w="";});}},"Entrar no mural")
+    ];
+  }
+
+  function roomView(){
+    if(!D)return [h("p",{},"Carregando o mural…")];
+    var P=entries(D.people).sort(function(a,b){return a[1].n.localeCompare(b[1].n,"pt-BR");}),n=P.length,box=h("div",{});
+    var cb=h("button",{class:"btn alt",type:"button",disabled:HOSTED?null:"disabled",onclick:function(e){copy(inviteMsg(),e.currentTarget,box);}},"Copiar convite");
+    var out=[h("h1",{},"🎄 Amigo Secreto"),warn(),h("p",{class:"err","aria-live":"polite",style:"margin:0 0 8px"},msg)];
+    if(L.org)out.push(h("p",{},"Convide a galera. Cada amigo entra pelo convite e já aparece no mural."),
+      h("div",{class:"row"},h("button",{class:"btn",type:"button",disabled:HOSTED?null:"disabled",onclick:function(){wa(inviteMsg());}},"Enviar no WhatsApp"),cb),box,
+      h("label",{class:"lab",style:"margin-top:16px"},"Valor sugerido",h("input",{type:"text",value:(D.meta&&D.meta.v)||"",placeholder:"Ex.: R$ 50",maxlength:"40",onchange:function(e){write("/meta/v","PUT",e.target.value.trim());}})));
+    else if(D.meta&&D.meta.v)out.push(h("p",{},"Valor sugerido: ",h("b",{},D.meta.v)));
+    out.push(joinBlock(),h("h2",{},"🎁 Mural de dicas ("+n+")"),
+      n?h("ul",{},P.map(personCard)):h("p",{class:"hint"},"Ninguém entrou ainda."),
+      L.db==="demo"?h("button",{class:"btn alt",type:"button",style:"margin-top:12px",onclick:function(){
+        var nm=["Ana","Bia","Caio","Duda","Edu","Fê"][Math.floor(Math.random()*6)],w=["livros","café especial","plantas","meias de Natal","jogos de tabuleiro"][Math.floor(Math.random()*5)];
+        write("/people/"+rid(4),"PUT",{n:nm+" "+Math.floor(Math.random()*90+10),w:w});}},"+ amigo fictício (demonstração)"):null,
+      pollSection("📅 Qual dia?","d","date","","Sugira uma data e todo mundo vota nos dias que preferir."),
+      pollSection("📍 Onde?","p","text","Sugerir um local","Sugira um local para a festa."),
+      pollSection("🍽️ O que vamos comer?","f","text","Sugerir um tipo de comida","Sugira o que vai rolar de comida."));
+    if(L.org){
+      if(L.links){
+        out.push(h("h2",{},"🎅 Sorteio feito!"),h("p",{},"Envie a cada pessoa a mensagem dela. O link mostra só quem ela tirou, e este painel não revela o resultado."),
+          h("ul",{},Object.keys(L.links).map(function(name){
+            var bx=h("li",{class:"mini"},h("b",{},name),h("span",{class:"row"},
+              h("button",{class:"btn",type:"button",disabled:HOSTED?null:"disabled",onclick:function(){wa(message(name));}},"WhatsApp"),
+              h("button",{class:"btn alt",type:"button",disabled:HOSTED?null:"disabled",onclick:function(e){copy(message(name),e.currentTarget,bx);}},"Copiar")));
+            return bx;})),
+          h("p",{class:"hint"},"Data, local e comida enviados: os mais votados no momento do sorteio."),
+          h("button",{class:"link",type:"button",onclick:function(){L.links=null;L.info=null;save();render();}},"Refazer o sorteio"));
+      }else out.push(h("button",{class:"btn wide",type:"button",disabled:n<3?"disabled":null,onclick:draw},n<3?"Sortear (faltam "+(3-n)+")":"🎅 Sortear "+n+" pessoas"));
+      out.push(h("div",{class:"foot"},h("button",{class:"link",type:"button",onclick:function(){if(confirm("Sair desta festa neste aparelho?"))leave();}},"Sair desta festa")));
+    }
+    return out;
+  }
+
+  function details(w,v,d,l,f){
+    var rows=[];
+    if(w)rows.push(["Dicas de presente",w]);
+    if(v)rows.push(["Valor",v]);
+    if(d)rows.push(["Data",d]);
+    if(l)rows.push(["Local",l]);
+    if(f)rows.push(["Comida",f]);
+    if(!rows.length)return null;
+    var dl=h("dl",{});
+    rows.forEach(function(r){dl.append(h("dt",{},r[0]),h("dd",{},r[1]));});
+    return dl;
+  }
+  function wall(a){
+    var k=Object.keys(a||{});
+    if(!k.length)return null;
+    return h("details",{class:"wall",style:"margin-top:22px"},h("summary",{},"🎁 Mural de dicas de todo mundo"),
+      k.map(function(n){return h("p",{},h("b",{},n+": "),h("span",{},a[n]));}));
+  }
+  function recView(){
+    if(!shown)return [
+      h("p",{class:"hand"},"🎄 Amigo secreto de"),h("div",{class:"who"},rec.g),
+      h("p",{},"Só "+rec.g+" deve ver a próxima tela. Confira se ninguém está olhando."),
+      h("button",{class:"btn wide",type:"button",onclick:function(){shown=true;render();}},"🎁 Mostrar quem eu tirei")
+    ];
+    return [
+      h("div",{class:"tag"},h("small",{},rec.g+", você tirou"),h("strong",{},rec.r)),
+      details(rec.w,rec.v,rec.d,rec.l,rec.f),wall(rec.a),
+      h("p",{style:"margin-top:20px"},"Guarde o segredo. Você pode voltar a este link quando quiser."),
+      h("button",{class:"btn alt wide",type:"button",onclick:function(){shown=false;render();}},"Esconder")
+    ];
+  }
+
+  function render(top){
+    app.replaceChildren();
+    var c;
+    if(loading)c=[h("p",{},"Abrindo…")];
+    else if(rec)c=recView();
+    else if(bad)c=[h("h1",{},"Link inválido"),h("p",{},"Este link está incompleto ou foi alterado. Peça ao organizador para enviar de novo.")];
+    else if(L.db&&L.room)c=roomView();
+    else c=setupView();
+    c.forEach(function(x){if(x)app.append(x);});
+    if(top===true)window.scrollTo(0,0);
+  }
+
+  load();readHash();
+  window.addEventListener("hashchange",readHash);
+  setInterval(function(){if(!document.hidden&&L.db&&L.room&&!rec&&!bad&&!loading)poll();},4000);
+})();
+</script>
+</body>
+</html>
