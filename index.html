@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#D62839">
 <title>Amigo secreto</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@400;700&display=swap">
 <style>
 :root{--bg:#F4F9F5;--surface:#FFFFFF;--ink:#173B2E;--muted:#587267;--line:#CBE0D3;--accent:#D62839;--accent-d:#9E1C2A;--gold:#F4B942;--flake:#BFD9CC;--ok:#1F7A4F;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -17,37 +21,36 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.55;b
 .cane{height:12px;background:repeating-linear-gradient(45deg,var(--accent) 0 14px,#fff 14px 28px)}
 main{position:relative;max-width:520px;margin:0 auto;padding:24px 18px 56px}
 h1,h2,.fun{font-family:"Fredoka","Nunito",system-ui,sans-serif}
-h1{font-size:clamp(34px,10vw,46px);line-height:1.05;margin:0 0 8px;font-weight:700}
+h1{font-size:clamp(34px,10vw,46px);line-height:1.05;margin:0 0 8px;font-weight:700;word-break:break-word}
 h2{font-size:22px;margin:30px 0 8px;font-weight:700}
 p{margin:0 0 14px;color:var(--muted)}
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .row{display:flex;gap:10px;flex-wrap:wrap}
-input[type=text],textarea{width:100%;min-height:48px;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--surface)}
+input[type=text],input[type=url],input[type=date],textarea{width:100%;min-width:0;min-height:48px;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--surface)}
 textarea{resize:vertical}
-.btn{min-height:50px;padding:0 22px;border-radius:999px;border:0;background:var(--accent);color:#fff;font:700 17px "Fredoka","Nunito",sans-serif;box-shadow:0 4px 0 var(--accent-d)}
+.btn{min-height:50px;padding:0 22px;border-radius:999px;border:0;background:var(--accent);color:#fff;font:700 17px "Fredoka","Nunito",sans-serif;box-shadow:0 4px 0 var(--accent-d);flex-shrink:0}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--accent-d)}
 .btn.alt{background:var(--surface);color:var(--ink);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .btn.wide{width:100%;margin-top:22px}
-.link{background:none;border:0;color:var(--muted);text-decoration:underline;min-height:44px}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;min-height:44px;padding:0 4px}
 .err{min-height:22px;margin:6px 0 0;color:var(--accent);font-size:15px;font-weight:700}
 .lab{display:block;margin-bottom:10px;color:var(--muted);font-size:15px;font-weight:700}
-.lab input{margin-top:4px;font-weight:400}
+.lab input{display:block;width:100%;max-width:100%;margin-top:4px;font-weight:400}
 ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:12px}
 .card{background:var(--surface);border-radius:18px;padding:14px 14px 10px 18px;border:2px solid var(--line);border-left:10px solid var(--c)}
-.card:nth-child(3n+1){--c:var(--accent);transform:rotate(-.6deg)}.card:nth-child(3n+2){--c:var(--gold);transform:rotate(.5deg)}.card:nth-child(3n){--c:#2E9A6B}
+.card:nth-child(3n+1){--c:var(--accent)}.card:nth-child(3n+2){--c:var(--gold)}.card:nth-child(3n){--c:#2E9A6B}
 .card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.card .top b{font:700 20px "Fredoka",sans-serif}
-.x{width:44px;height:44px;border:0;background:none;color:var(--muted);font-size:24px;border-radius:10px}
+.card .top b{font:700 20px "Fredoka",sans-serif;word-break:break-word}
+.x{width:44px;height:44px;flex-shrink:0;border:0;background:none;color:var(--muted);font-size:24px;border-radius:10px}
 .card details{margin-top:6px}
 summary{min-height:40px;display:flex;align-items:center;color:var(--muted);font-size:15px;font-weight:700;cursor:pointer}
 .chk{display:flex;align-items:center;gap:10px;min-height:40px;font-size:16px}
-.chk input{width:20px;height:20px}
+.chk input{width:20px;height:20px;flex-shrink:0}
 .mini{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:10px 14px}
-.mini b{font:700 19px "Fredoka",sans-serif}
-.pick{width:100%;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:18px;min-height:58px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;font:700 20px "Fredoka",sans-serif}
+.mini b{font:700 19px "Fredoka",sans-serif;word-break:break-word}
 .seen{color:var(--ok);font-size:15px;font-weight:700}
 .hand{font-size:15px;color:var(--muted);margin:0 0 4px;font-weight:700}
 .who{font:700 clamp(38px,12vw,56px)/1.05 "Fredoka",sans-serif;margin:0 0 22px;word-break:break-word}
@@ -57,307 +60,706 @@ summary{min-height:40px;display:flex;align-items:center;color:var(--muted);font-
 .tag strong{display:block;font:700 clamp(40px,13vw,60px)/1.05 "Fredoka",sans-serif;word-break:break-word}
 @keyframes drop{from{transform:rotate(-6deg) translateY(-16px);opacity:0}to{transform:none;opacity:1}}
 dl{margin:20px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px}
-dt{color:var(--muted)}dd{margin:0;font-weight:700}
+dt{color:var(--muted)}dd{margin:0;font-weight:700;word-break:break-word}
 .wall p{margin:0 0 6px;color:var(--ink)}.wall span{color:var(--muted)}
-.done{color:var(--ok);font-weight:700}
 .foot{margin-top:28px}
-@media (prefers-reduced-motion:reduce){.tag,body::before{animation:none}}
-
-.lab input{display:block;width:100%;max-width:100%}
 .hint{font-size:15px;color:var(--muted);margin:6px 0 0}
-.steps{margin:0 0 16px;padding-left:22px;color:var(--muted)}
-.steps li{margin-bottom:6px}
-input[type=date]{min-height:48px}
+.box{background:var(--surface);border:2px dashed var(--gold);border-radius:18px;padding:14px 16px;margin:14px 0}
+.box p{color:var(--ink)}
+.box.warnbox{border-color:var(--accent)}
+.code{font:700 26px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:2px;color:var(--ink);margin:6px 0 10px;user-select:all;word-break:break-all}
+.count{font:700 19px "Fredoka",sans-serif;color:var(--ink);margin:4px 0 12px}
+.lk{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0 0}
+.lk a,.lnk{color:var(--ink);font-weight:700;word-break:break-word}
+.links{gap:4px;margin:8px 0 0}
+.links li{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.qa{margin:10px 0 0;padding-top:8px;border-top:1px dashed var(--line);font-size:15px}
+.qa p{margin:0 0 2px;color:var(--ink)}
+.qa .hint{margin:0 0 6px}
+.qa .row{margin:4px 0 8px;flex-wrap:nowrap}
+@media (prefers-reduced-motion:reduce){.tag,body::before{animation:none}}
 </style>
 </head>
 <body>
 <div class="cane"></div>
 <main id="app"></main>
 <script>
-(function(){
-  var KEY="amigo-secreto-natal-v4";
-  var BASE=location.href.split("#")[0];
-  var HOSTED=/^https?:\/\//.test(BASE);
-  var L={db:"",room:"",org:false,pid:"",ex:{},links:null,info:null};
-  var D=null,MEM={},dr={n:"",w:"",d:"",p:"",f:""};
-  var msg="",rec=null,bad=false,shown=false,loading=location.hash.length>1,view="home";
-  var app=document.getElementById("app");
+(() => {
+  "use strict";
+  const KEY = "amigo-secreto-v5", OLD_KEY = "amigo-secreto-natal-v4";
+  const BASE = location.href.split("#")[0];
+  const DB = "https://amigo-secreto-64e8b-default-rtdb.firebaseio.com";
+  const HOSTED = /^https?:\/\//.test(BASE);
+  const DBRE = /^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebaseio\.com|firebasedatabase\.app)$/;
+  const sub = crypto.subtle, te = new TextEncoder(), td = new TextDecoder();
+  const app = document.getElementById("app");
+  const OPEN = new Set();                       // <details> abertos, sobrevivem aos redesenhos
 
-  function load(){try{var r=localStorage.getItem(KEY);if(r){var d=JSON.parse(r);if(d&&typeof d==="object")L=Object.assign(L,d);}}catch(e){}}
-  function save(){try{localStorage.setItem(KEY,JSON.stringify(L));}catch(e){}}
-  function rid(n){return hx(crypto.getRandomValues(new Uint8Array(n)));}
+  /* estado local: várias festas por aparelho */
+  let S = { cur: "", rooms: {} };
+  /* estado da sala */
+  let offT = null, D = null, MEM = {}, es = null, pollT = null, snap = "", dirty = false, ptr = false, off = false, seq = 0;
+  let msg = "", note = "", work = "", claim = null, orgClaim = false, reveal = false, mine = { key: "" };
+  const once = {};
+  const dr = { n: "", w: "", d: "", p: "", f: "", lt: "", lu: "", code: "", oc: "", q: {}, a: {} };
+  /* links antigos (#x…) */
+  let rec = null, bad = false, shown = false, stale = false, loading = location.hash.length > 1;
 
-  function h(tag,attrs){
-    var e=document.createElement(tag);attrs=attrs||{};
-    Object.keys(attrs).forEach(function(k){
-      var v=attrs[k];
-      if(v===null||v===undefined)return;
-      if(k==="class")e.className=v;
-      else if(k.indexOf("on")===0)e.addEventListener(k.slice(2),v);
-      else e.setAttribute(k,v);
+  /* ---------- utilidades ---------- */
+  const hx = b => Array.from(b, x => x.toString(16).padStart(2, "0")).join("");
+  const ub = s => { const o = new Uint8Array(s.length >> 1); for (let i = 0; i < o.length; i++) o[i] = parseInt(s.substr(i * 2, 2), 16); return o; };
+  const b64u = b => btoa(String.fromCharCode(...b)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  const ub64u = s => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), c => c.charCodeAt(0));
+  const rid = n => hx(crypto.getRandomValues(new Uint8Array(n)));
+  const clone = v => v == null ? null : JSON.parse(JSON.stringify(v));
+  const entries = o => (o && typeof o === "object") ? Object.keys(o).map(k => [k, o[k]]) : [];
+  const str = (v, n) => typeof v === "string" ? v.slice(0, n) : (typeof v === "number" ? String(v) : "");
+  const nm = p => str(p && p.n, 30) || "?";
+
+  function h(tag, attrs, ...kids) {
+    const e = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(k => {
+      const v = attrs[k];
+      if (v === null || v === undefined || v === false) return;
+      if (k === "class") e.className = v;
+      else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+      else e.setAttribute(k, v);
     });
-    for(var i=2;i<arguments.length;i++)[].concat(arguments[i]).forEach(function(c){if(c!=null&&c!==false)e.append(c);});
+    kids.flat(Infinity).forEach(c => { if (c != null && c !== false) e.append(c); });
     return e;
   }
-
-  function hx(b){return Array.from(b,function(x){return ("0"+x.toString(16)).slice(-2);}).join("");}
-  function ub(s){var o=new Uint8Array(s.length/2);for(var i=0;i<o.length;i++)o[i]=parseInt(s.substr(i*2,2),16);return o;}
-  function pack(o){return hx(new TextEncoder().encode(JSON.stringify(o)));}
-  function unpack(s){return JSON.parse(new TextDecoder().decode(ub(s)));}
-  async function enc(obj){
-    var k=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
-    var key=await crypto.subtle.importKey("raw",k,"AES-GCM",false,["encrypt"]);
-    var ct=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv:iv},key,new TextEncoder().encode(JSON.stringify(obj))));
-    return "x"+hx(k)+hx(iv)+hx(ct);
-  }
-  async function dec(t){
-    try{
-      if(t.length<90||t.length%2===0)return null;
-      var s=t.slice(1),key=await crypto.subtle.importKey("raw",ub(s.slice(0,32)),"AES-GCM",false,["decrypt"]);
-      var pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:ub(s.slice(32,56))},key,ub(s.slice(56)));
-      var o=JSON.parse(new TextDecoder().decode(pt));return o&&o.g&&o.r?o:null;
-    }catch(e){return null;}
+  function det(k, summary, ...kids) {
+    return h("details", { open: OPEN.has(k) ? "" : null, ontoggle: e => { e.currentTarget.open ? OPEN.add(k) : OPEN.delete(k); } },
+      h("summary", {}, summary), kids);
   }
 
-  /* banco: Firebase Realtime Database (REST) ou memória (demonstração) */
-  function mem(path,method,body){
-    var parts=path.split("/").filter(Boolean),o=MEM,x=MEM,i;
-    if(method==="GET"){for(i=0;i<parts.length;i++)x=x&&x[parts[i]];return x===undefined?null:JSON.parse(JSON.stringify(x));}
-    for(i=0;i<parts.length-1;i++)o=o[parts[i]]=o[parts[i]]||{};
-    var k=parts[parts.length-1];
-    if(method==="DELETE"){delete o[k];return null;}
-    if(method==="POST"){var id="k"+Date.now().toString(36)+Math.floor(Math.random()*1e4);o[id]=body;return {name:id};}
-    o[k]=body;return body;
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) { const d = JSON.parse(raw); if (d && d.rooms && typeof d.rooms === "object") S = { cur: d.cur || "", rooms: d.rooms }; }
+      else {
+        const o = JSON.parse(localStorage.getItem(OLD_KEY) || "null");
+        if (o && o.db && o.room && o.db !== "demo") {
+          S.rooms[o.room] = { db: o.db, room: o.room, org: !!o.org, pid: o.pid || rid(8), mig: o.ex || null };
+          S.cur = o.room;
+        }
+      }
+    } catch (e) {}
+    if (S.rooms.demo) { delete S.rooms.demo; if (S.cur === "demo") S.cur = ""; }
+    if (S.cur && !S.rooms[S.cur]) S.cur = "";
   }
-  function api(path,method,body){
-    if(L.db==="demo")return Promise.resolve(mem(path,method||"GET",body));
-    return fetch(L.db+"/rooms/"+L.room+path+".json",{method:method||"GET",headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)})
-      .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});
-  }
-  function poll(){
-    return api("").then(function(d){D=d||{};msg="";if(!typing())render();}).catch(function(){msg="Sem conexão com o banco. Tentando de novo…";if(!D)D={};if(!typing())render();});
-  }
-  function typing(){var a=document.activeElement;return a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA");}
-  function write(path,method,body,after){return api(path,method,body).then(function(){if(after)after();return poll();}).catch(function(){msg="Não consegui salvar. Confira sua conexão.";render();});}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  const R = () => S.rooms[S.cur] || null;
 
-  var DBRE=/^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebaseio\.com|firebasedatabase\.app)$/;
-  function join(o){
-    if(!o||!DBRE.test(o.u||"")||!/^[0-9a-f]{6,40}$/.test(o.r||"")){bad=true;return;}
-    if(L.room!==o.r||L.db!==o.u){L={db:o.u,room:o.r,org:false,pid:rid(8),ex:{},links:null,info:null};save();D=null;}
-  }
-  async function readHash(){
-    var t=location.hash.replace("#","");
-    rec=null;bad=false;shown=false;
-    if(!t){loading=false;render(true);return;}
-    loading=true;render(true);
-    if(t.charAt(0)==="x")rec=await dec(t);
-    else if(t.charAt(0)==="j"){try{join(unpack(t.slice(1)));}catch(e){bad=true;}}
-    else bad=true;
-    if(t.charAt(0)==="x")bad=!rec;
-    loading=false;render(true);if(L.db&&!rec&&!bad)poll();
-  }
-
-  /* configuração (organizador) */
-  async function connect(){
-    var u=document.getElementById("dburl").value.trim().replace(/\/+$/,"");
-    if(!DBRE.test(u)){msg="Endereço inválido. Ele termina em firebaseio.com ou firebasedatabase.app.";render();return;}
-    var room=rid(6);
-    try{
-      var r=await fetch(u+"/rooms/"+room+"/meta.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({v:""})});
-      if(!r.ok)throw new Error(r.status);
-    }catch(e){msg="Não consegui conectar. Confira o endereço e se o banco está em modo de teste.";render();return;}
-    L={db:u,room:room,org:true,pid:rid(8),ex:{},links:null,info:null};msg="";D=null;save();render(true);poll();
-  }
-  function demo(){MEM={};L={db:"demo",room:"demo",org:true,pid:rid(8),ex:{},links:null,info:null};D=null;save();render(true);poll();}
-  function leave(){L={db:"",room:"",org:false,pid:"",ex:{},links:null,info:null};D=null;save();render(true);}
-
-  function setupView(){
-    var inp=h("input",{id:"dburl",type:"text",placeholder:"https://seu-projeto-default-rtdb.firebaseio.com",autocomplete:"off"});
-    return [
-      h("h1",{},"🎄 Amigo Secreto"),
-      h("p",{},"Para os amigos adicionarem dicas, sugerirem e votarem direto no mural, o app precisa de um banco de dados gratuito. Faça isso uma vez, em uns 5 minutos:"),
-      h("ol",{class:"steps"},
-        h("li",{},"Entre em console.firebase.google.com e crie um projeto (pode desativar o Google Analytics)."),
-        h("li",{},"Vá em Build > Realtime Database > Criar banco de dados, e escolha o modo de teste."),
-        h("li",{},"Copie o endereço que aparece no topo da tela do banco e cole abaixo.")),
-      h("label",{class:"lab"},"Endereço do Realtime Database",inp),
-      h("p",{class:"err","aria-live":"polite"},msg),
-      h("button",{class:"btn wide",type:"button",onclick:connect},"Criar a festa"),
-      h("button",{class:"btn alt wide",type:"button",onclick:demo},"Ver demonstração, sem banco")
-    ];
-  }
-
-  /* sala */
-  function entries(o){return Object.keys(o||{}).map(function(k){return [k,o[k]];});}
-  function me(){return D&&D.people&&D.people[L.pid];}
-  function fmtDate(s){var p=String(s).split("-");if(p.length!==3)return s;return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString("pt-BR",{weekday:"short",day:"2-digit",month:"short"});}
-  function opts(key){
-    return entries(D[key]).map(function(e){var vs=(D.votes&&D.votes[key]&&D.votes[key][e[0]])||{};return {k:e[0],t:e[1].t,n:Object.keys(vs).length,mine:!!vs[L.pid]};})
-      .sort(function(a,b){return b.n-a.n||(a.k<b.k?-1:1);});
-  }
-  function lead(key){var o=opts(key);return o.length&&o[0].n>0?(key==="d"?fmtDate(o[0].t):o[0].t):"";}
-
-  function pollSection(title,key,type,ph,hint){
-    var list=opts(key),top=list.length&&list[0].n>0?list[0].k:null,ok=!!me();
-    var inp=h("input",{type:type,value:dr[key]||"",placeholder:ph,maxlength:"60","aria-label":title,oninput:function(e){dr[key]=e.target.value;}});
-    return [
-      h("h2",{},title),
-      h("ul",{},list.map(function(o){
-        return h("li",{class:"mini"},
-          h("b",{},(o.k===top?"🏆 ":"")+(key==="d"?fmtDate(o.t):o.t)),
-          h("span",{class:"row",style:"align-items:center"},
-            h("span",{class:"seen"},o.n+(o.n===1?" voto":" votos")),
-            h("button",{class:"btn"+(o.mine?"":" alt"),type:"button",disabled:ok?null:"disabled",onclick:function(){write("/votes/"+key+"/"+o.k+"/"+L.pid,o.mine?"DELETE":"PUT",true);}},o.mine?"✓ Meu voto":"Votar"),
-            L.org?h("button",{class:"x",type:"button","aria-label":"Remover opção",onclick:function(){write("/"+key+"/"+o.k,"DELETE");}},"×"):null));
-      })),
-      list.length?null:h("p",{class:"hint"},hint),
-      h("div",{class:"row",style:"flex-wrap:nowrap;margin-top:10px"},inp,
-        h("button",{class:"btn",type:"button",disabled:ok?null:"disabled",onclick:function(){
-          var v=inp.value.trim();if(!v)return;
-          if(list.some(function(o){return String(o.t).toLowerCase()===v.toLowerCase();})){dr[key]="";inp.value="";return;}
-          write("/"+key,"POST",{t:v,by:me().n},function(){dr[key]="";});}},"Sugerir"))
-    ];
-  }
-
-  function warn(){return HOSTED?null:h("p",{class:"err",style:"margin:0 0 14px"},"⚠️ Você está vendo uma prévia do arquivo, então os convites e links não funcionam aqui. Hospede o index.html (Netlify Drop) e abra pelo endereço dele.");}
-  function wa(m){window.open("https://wa.me/?text="+encodeURIComponent(m),"_blank","noopener");}
-  function copy(text,btn,box){
-    function fb(){if(box.querySelector("input.cp"))return;var i=h("input",{type:"text",class:"cp",readonly:"readonly",value:text.replace(/\n/g," "),"aria-label":"Texto para copiar",style:"margin-top:8px"});box.append(i);i.focus();i.select();}
-    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(function(){btn.textContent="Copiado ✓";},fb);else fb();
-  }
-  function inviteMsg(){return "🎄 Amigo secreto de Natal! Entre no mural: adicione sua dica de presente, vote no melhor dia e sugira local e comida:\n"+BASE+"#j"+pack({u:L.db,r:L.room});}
-  function eventText(){
-    var i=L.info||{},t=[];
-    if(i.v)t.push("Valor sugerido: "+i.v);
-    if(i.d)t.push("Data: "+i.d);
-    if(i.l)t.push("Local: "+i.l);
-    if(i.f)t.push("Comida: "+i.f);
-    return t.join("\n");
-  }
-  function message(name){var e=eventText();return "🎁 Amigo secreto de Natal!\nOi, "+name+"! Descubra quem você tirou neste link (só você deve abrir):\n"+BASE+"#"+L.links[name]+(e?"\n\n"+e:"");}
-
-  function blocked(a,b){return a===b||(L.ex[a]||[]).indexOf(b)>-1||(L.ex[b]||[]).indexOf(a)>-1;}
-  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var b=new Uint32Array(1);crypto.getRandomValues(b);var j=b[0]%(i+1),t=a[i];a[i]=a[j];a[j]=t;}return a;}
-  async function draw(){
-    var seen={},P=entries(D.people).map(function(e){return {id:e[0],n:e[1].n,w:e[1].w||""};});
-    P.forEach(function(p){var b=p.n,i=2;while(seen[p.n.toLowerCase()])p.n=b+" ("+(i++)+")";seen[p.n.toLowerCase()]=1;});
-    var ids=P.map(function(p){return p.id;}),ok=null;
-    for(var t=0;t<5000&&!ok;t++){var q=shuffle(ids),good=true;for(var i=0;i<ids.length;i++)if(blocked(ids[i],q[i])){good=false;break;}if(good)ok=q;}
-    if(!ok){msg="Com essas restrições não existe sorteio possível. Remova alguma.";render();return;}
-    var by={},a={},info={v:(D.meta&&D.meta.v)||"",d:lead("d"),l:lead("p"),f:lead("f")};
-    P.forEach(function(p){by[p.id]=p;if(p.w)a[p.n]=p.w;});
-    var links={};
-    for(var i=0;i<P.length;i++)links[P[i].n]=await enc({g:P[i].n,r:by[ok[i]].n,w:by[ok[i]].w,a:a,v:info.v,d:info.d,l:info.l,f:info.f});
-    L.links=links;L.info=info;msg="";save();render(true);
-  }
-
-  function personCard(e){
-    var id=e[0],p=e[1],isMe=id===L.pid;
-    var others=entries(D.people).filter(function(o){return o[0]!==id;});
-    return h("li",{class:"card"},
-      h("div",{class:"top"},h("b",{},"🎁 "+p.n+(isMe?" (você)":"")),
-        L.org&&!isMe?h("button",{class:"x",type:"button","aria-label":"Remover "+p.n,onclick:function(){write("/people/"+id,"DELETE");}},"×"):null),
-      isMe?h("input",{type:"text",value:p.w||"",placeholder:"Sua dica de presente","aria-label":"Sua dica de presente",maxlength:"120",onchange:function(ev){write("/people/"+id+"/w","PUT",ev.target.value.trim());}})
-          :h("p",{style:"margin:0;color:var(--ink)"},p.w||"Ainda sem dica"),
-      L.org&&others.length?h("details",{},h("summary",{},"🚫 Não pode tirar…"),
-        others.map(function(o){return h("label",{class:"chk"},h("input",{type:"checkbox",checked:(L.ex[id]||[]).indexOf(o[0])>-1?"checked":null,onchange:function(){var l=L.ex[id]||[],i=l.indexOf(o[0]);if(i>-1)l.splice(i,1);else l.push(o[0]);L.ex[id]=l;save();}}),o[1].n);})):null
-    );
-  }
-
-  function joinBlock(){
-    if(me())return null;
-    return [
-      h("h2",{},"👋 Entre no mural"),
-      h("label",{class:"lab"},"Seu nome",h("input",{type:"text",value:dr.n,maxlength:"30",autocomplete:"name",oninput:function(e){dr.n=e.target.value;}})),
-      h("label",{class:"lab"},"Sua dica de presente",h("input",{type:"text",value:dr.w,maxlength:"120",placeholder:"Ex.: livros, café, plantas",oninput:function(e){dr.w=e.target.value;}})),
-      h("button",{class:"btn",type:"button",onclick:function(){
-        var n=dr.n.replace(/\s+/g," ").trim();
-        if(!n){msg="Digite seu nome.";render();return;}
-        if(entries(D.people).some(function(e){return e[1].n.toLowerCase()===n.toLowerCase();})){msg=n+" já está no mural.";render();return;}
-        write("/people/"+L.pid,"PUT",{n:n,w:dr.w.trim()},function(){dr.w="";});}},"Entrar no mural")
-    ];
-  }
-
-  function roomView(){
-    if(!D)return [h("p",{},"Carregando o mural…")];
-    var P=entries(D.people).sort(function(a,b){return a[1].n.localeCompare(b[1].n,"pt-BR");}),n=P.length,box=h("div",{});
-    var cb=h("button",{class:"btn alt",type:"button",disabled:HOSTED?null:"disabled",onclick:function(e){copy(inviteMsg(),e.currentTarget,box);}},"Copiar convite");
-    var out=[h("h1",{},"🎄 Amigo Secreto"),warn(),h("p",{class:"err","aria-live":"polite",style:"margin:0 0 8px"},msg)];
-    if(L.org)out.push(h("p",{},"Convide a galera. Cada amigo entra pelo convite e já aparece no mural."),
-      h("div",{class:"row"},h("button",{class:"btn",type:"button",disabled:HOSTED?null:"disabled",onclick:function(){wa(inviteMsg());}},"Enviar no WhatsApp"),cb),box,
-      h("label",{class:"lab",style:"margin-top:16px"},"Valor sugerido",h("input",{type:"text",value:(D.meta&&D.meta.v)||"",placeholder:"Ex.: R$ 50",maxlength:"40",onchange:function(e){write("/meta/v","PUT",e.target.value.trim());}})));
-    else if(D.meta&&D.meta.v)out.push(h("p",{},"Valor sugerido: ",h("b",{},D.meta.v)));
-    out.push(joinBlock(),h("h2",{},"🎁 Mural de dicas ("+n+")"),
-      n?h("ul",{},P.map(personCard)):h("p",{class:"hint"},"Ninguém entrou ainda."),
-      L.db==="demo"?h("button",{class:"btn alt",type:"button",style:"margin-top:12px",onclick:function(){
-        var nm=["Ana","Bia","Caio","Duda","Edu","Fê"][Math.floor(Math.random()*6)],w=["livros","café especial","plantas","meias de Natal","jogos de tabuleiro"][Math.floor(Math.random()*5)];
-        write("/people/"+rid(4),"PUT",{n:nm+" "+Math.floor(Math.random()*90+10),w:w});}},"+ amigo fictício (demonstração)"):null,
-      pollSection("📅 Qual dia?","d","date","","Sugira uma data e todo mundo vota nos dias que preferir."),
-      pollSection("📍 Onde?","p","text","Sugerir um local","Sugira um local para a festa."),
-      pollSection("🍽️ O que vamos comer?","f","text","Sugerir um tipo de comida","Sugira o que vai rolar de comida."));
-    if(L.org){
-      if(L.links){
-        out.push(h("h2",{},"🎅 Sorteio feito!"),h("p",{},"Envie a cada pessoa a mensagem dela. O link mostra só quem ela tirou, e este painel não revela o resultado."),
-          h("ul",{},Object.keys(L.links).map(function(name){
-            var bx=h("li",{class:"mini"},h("b",{},name),h("span",{class:"row"},
-              h("button",{class:"btn",type:"button",disabled:HOSTED?null:"disabled",onclick:function(){wa(message(name));}},"WhatsApp"),
-              h("button",{class:"btn alt",type:"button",disabled:HOSTED?null:"disabled",onclick:function(e){copy(message(name),e.currentTarget,bx);}},"Copiar")));
-            return bx;})),
-          h("p",{class:"hint"},"Data, local e comida enviados: os mais votados no momento do sorteio."),
-          h("button",{class:"link",type:"button",onclick:function(){L.links=null;L.info=null;save();render();}},"Refazer o sorteio"));
-      }else out.push(h("button",{class:"btn wide",type:"button",disabled:n<3?"disabled":null,onclick:draw},n<3?"Sortear (faltam "+(3-n)+")":"🎅 Sortear "+n+" pessoas"));
-      out.push(h("div",{class:"foot"},h("button",{class:"link",type:"button",onclick:function(){if(confirm("Sair desta festa neste aparelho?"))leave();}},"Sair desta festa")));
+  /* ---------- criptografia ---------- */
+  const EC = { name: "ECDH", namedCurve: "P-256" };
+  function newCode() {
+    const A = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let s = "";
+    while (s.replace("-", "").length < 10) {
+      const b = crypto.getRandomValues(new Uint8Array(16));
+      for (const x of b) { if (x < 248 && s.replace("-", "").length < 10) { s += A[x % 31]; if (s.length === 5) s += "-"; } }
     }
+    return s;
+  }
+  function normCode(c) { c = String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); return c.length === 10 ? c.slice(0, 5) + "-" + c.slice(5) : c; }
+  async function derive(code, salt) {
+    const base = await sub.importKey("raw", te.encode(normCode(code)), "PBKDF2", false, ["deriveBits"]);
+    const bits = new Uint8Array(await sub.deriveBits({ name: "PBKDF2", salt: ub(salt), iterations: 150000, hash: "SHA-256" }, base, 512));
+    const key = await sub.importKey("raw", bits.slice(0, 32), "AES-GCM", false, ["encrypt", "decrypt"]);
+    const v = hx(new Uint8Array(await sub.digest("SHA-256", bits.slice(32))));
+    return { key, v };
+  }
+  async function aesEnc(key, bytes) {
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    return { i: hx(iv), c: hx(new Uint8Array(await sub.encrypt({ name: "AES-GCM", iv }, key, bytes))) };
+  }
+  async function aesDec(key, box) { return new Uint8Array(await sub.decrypt({ name: "AES-GCM", iv: ub(box.i) }, key, ub(box.c))); }
+  async function genKeys() {
+    const k = await sub.generateKey(EC, true, ["deriveBits"]);
+    return { pk: hx(new Uint8Array(await sub.exportKey("raw", k.publicKey))), sk: await sub.exportKey("jwk", k.privateKey) };
+  }
+  async function shared(priv, pubHex) {
+    const pub = await sub.importKey("raw", ub(pubHex), EC, false, []);
+    const bits = await sub.deriveBits({ name: "ECDH", public: pub }, priv, 256);
+    return sub.importKey("raw", await sub.digest("SHA-256", bits), "AES-GCM", false, ["encrypt", "decrypt"]);
+  }
+  /* cifra para a chave pública de uma pessoa: só o aparelho dela abre */
+  async function seal(pkHex, obj) {
+    const eph = await sub.generateKey(EC, true, ["deriveBits"]);
+    const box = await aesEnc(await shared(eph.privateKey, pkHex), te.encode(JSON.stringify(obj)));
+    box.e = hx(new Uint8Array(await sub.exportKey("raw", eph.publicKey)));
+    return box;
+  }
+  async function unseal(skJwk, box) {
+    const sk = await sub.importKey("jwk", skJwk, EC, false, ["deriveBits"]);
+    return JSON.parse(td.decode(await aesDec(await shared(sk, box.e), box)));
+  }
+  /* identidade de participante: par de chaves + código de recuperação */
+  async function makeIdentity() {
+    const code = newCode(), s = rid(16), { key, v } = await derive(code, s), k = await genKeys();
+    const keys = await aesEnc(key, te.encode(JSON.stringify(k.sk))); keys.s = s;
+    return { code, pk: k.pk, sk: k.sk, h: v, keys };
+  }
+
+  /* ---------- banco: Firebase Realtime Database (REST + streaming) ou memória ---------- */
+  function getPath(root, path) { let x = root; for (const p of path.split("/").filter(Boolean)) x = x && typeof x === "object" ? x[p] : undefined; return x === undefined ? null : x; }
+  function setPath(root, path, val) {
+    const parts = path.split("/").filter(Boolean);
+    if (!parts.length) return val == null || typeof val !== "object" ? {} : clone(val);
+    if (!root || typeof root !== "object") root = {};
+    let o = root;
+    for (let i = 0; i < parts.length - 1; i++) { if (!o[parts[i]] || typeof o[parts[i]] !== "object") o[parts[i]] = {}; o = o[parts[i]]; }
+    const k = parts[parts.length - 1];
+    if (val == null) delete o[k]; else o[k] = clone(val);
+    return root;
+  }
+  function mem(path, method, body) {
+    if (method === "GET") return clone(getPath(MEM, path));
+    if (method === "POST") { const id = "k" + Date.now().toString(36) + rid(2); MEM = setPath(MEM, path + "/" + id, body); return { name: id }; }
+    if (method === "PATCH") { Object.keys(body).forEach(k => { MEM = setPath(MEM, path + "/" + k, body[k]); }); return body; }
+    MEM = setPath(MEM, path, method === "DELETE" ? null : body); return body;
+  }
+  const dbUrl = path => { const r = R(); return r.db + "/rooms/" + r.room + path + ".json"; };
+  function api(path, method = "GET", body) {
+    const r = R();
+    if (!r) return Promise.reject(new Error("sem sala"));
+    if (r.db === "demo") return Promise.resolve(mem(path, method, body));
+    return fetch(dbUrl(path), { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) })
+      .then(x => { if (!x.ok) throw new Error(x.status); return x.json(); });
+  }
+  function poll() {
+    const my = ++seq, room = S.cur;
+    if (document.hidden && D) return Promise.resolve();
+    return api("").then(d => { if (my !== seq || room !== S.cur) return; D = d && typeof d === "object" ? d : {}; off = false; changed(); })
+      .catch(() => { if (room !== S.cur) return; off = true; if (!D) D = {}; changed(); });
+  }
+  function stopLive() { if (es) { es.close(); es = null; } clearInterval(pollT); pollT = null; clearTimeout(offT); off = false; }
+  function live() {
+    stopLive();
+    const r = R(); if (!r) return;
+    if (r.db === "demo") { D = clone(MEM) || {}; changed(); return; }
+    if (!window.EventSource) { pollT = setInterval(poll, 4000); poll(); return; }
+    const src = new EventSource(dbUrl("")); es = src;
+    const apply = (e, patch) => {
+      if (es !== src) return;
+      let m; try { m = JSON.parse(e.data); } catch (x) { return; }
+      if (!m || typeof m.path !== "string") return;
+      if (patch) Object.keys(m.data || {}).forEach(k => { D = setPath(D, m.path.replace(/\/$/, "") + "/" + k, m.data[k]); });
+      else D = setPath(D, m.path, m.data);
+      clearTimeout(offT); off = false; changed();
+    };
+    src.addEventListener("put", e => apply(e, false));
+    src.addEventListener("patch", e => apply(e, true));
+    src.addEventListener("cancel", () => { if (es !== src) return; stopLive(); msg = "O banco recusou o acesso. Confira as regras do Firebase."; if (!D) D = {}; changed(true); });
+    src.onerror = () => {
+      if (es !== src) return;
+      if (src.readyState === 2) { es = null; pollT = setInterval(poll, 4000); poll(); }
+      else { if (!D) { D = {}; changed(); } clearTimeout(offT); offT = setTimeout(() => { if (es === src && src.readyState !== 1) { off = true; changed(); } }, 4000); }
+    };
+  }
+  function refresh() { const r = R(); if (!r) return; if (r.db === "demo") { D = clone(MEM) || {}; changed(); } else if (!es) poll(); }
+  function write(path, method, body, after) {
+    return api(path, method, body)
+      .then(() => { if (after) after(); refresh(); dirty = true; flush(); })
+      .catch(() => { msg = "Não consegui salvar. Confira sua conexão."; render(); });
+  }
+
+  /* redesenha só quando os dados mudam, e nunca no meio de uma digitação ou de um toque */
+  function typing() { const a = document.activeElement; return !!a && (a.tagName === "TEXTAREA" || (a.tagName === "INPUT" && !/^(checkbox|radio|button|submit)$/.test(a.type))); }
+  function changed(force) {
+    const s = JSON.stringify(D) + "|" + off;
+    if (s === snap && !force) return;
+    snap = s; afterData(); dirty = true; flush();
+  }
+  function flush() { if (dirty && !typing() && !ptr) render(); }
+
+  /* efeitos colaterais quando chegam dados novos */
+  function afterData() {
+    const r = R(); if (!r || !D) return;
+    const m = D.meta || {}, p = me(), k = r.room + ":";
+    if (typeof m.t === "string" && r.t !== m.t) { r.t = str(m.t, 50); save(); }
+    // perfil de versão antiga sem chave: cria a identidade agora
+    if (p && !p.pk && !once[k + "up"]) {
+      once[k + "up"] = 1;
+      makeIdentity().then(id => {
+        r.code = id.code; r.sk = id.sk; save(); note = "me";
+        write("", "PATCH", { ["people/" + r.pid + "/pk"]: id.pk, ["people/" + r.pid + "/h"]: id.h, ["keys/" + r.pid]: id.keys });
+      });
+    }
+    // festa de versão antiga sem código de organizador
+    if (r.org && !m.oh && r.db !== "demo" && !once[k + "oh"]) {
+      once[k + "oh"] = 1;
+      const oc = newCode(), s = rid(16);
+      derive(oc, s).then(({ v }) => { r.oc = oc; save(); note = "org"; write("/meta/oh", "PUT", { s, h: v }); });
+    }
+    // restrições que ficavam só no aparelho do organizador (versão antiga)
+    if (r.org && r.mig) {
+      const u = {};
+      entries(r.mig).forEach(e => (Array.isArray(e[1]) ? e[1] : []).forEach(b => { if (e[0] !== b) u["ex/" + e[0] + "/" + b] = true; }));
+      delete r.mig; save();
+      if (Object.keys(u).length) write("", "PATCH", u);
+    }
+    // abre o meu resultado, cifrado para a minha chave
+    const box = D.res && D.res[r.pid];
+    if (box && r.sk) {
+      const key = JSON.stringify(box);
+      if (mine.key !== key) {
+        mine = { key, r: null, err: false }; reveal = false;
+        unseal(r.sk, box).then(o => { if (mine.key === key) { mine.r = o; dirty = true; flush(); } })
+          .catch(() => { if (mine.key === key) { mine.err = true; dirty = true; flush(); } });
+      }
+    } else if (!box) mine = { key: "" };
+  }
+
+  /* ---------- navegação ---------- */
+  function resetRoom() { D = null; snap = ""; mine = { key: "" }; claim = null; orgClaim = false; reveal = false; msg = ""; note = ""; OPEN.clear(); }
+  function openRoom(id) { S.cur = id; save(); resetRoom(); render(true); live(); }
+  function home() { stopLive(); S.cur = ""; save(); resetRoom(); render(true); }
+  function forget(id) { delete S.rooms[id]; if (S.cur === id) S.cur = ""; save(); home(); }
+  function join(o) {
+    if (!o || !DBRE.test(o.u || "") || !/^[0-9a-f]{6,40}$/.test(o.r || "")) return false;
+    if (!S.rooms[o.r]) S.rooms[o.r] = { db: o.u, room: o.r, org: false, pid: rid(8) };
+    S.cur = o.r; save(); resetRoom(); return true;
+  }
+  async function readHash() {
+    const t = location.hash.slice(1);
+    rec = null; bad = false; shown = false; stale = false;
+    if (!t) { loading = false; render(true); if (R()) live(); else stopLive(); return; }
+    loading = true; render(true);
+    const c = t.charAt(0);
+    if (c === "x") {
+      rec = await dec(t); bad = !rec;
+      if (rec && rec.db && DBRE.test(rec.db)) {
+        try { const rr = await fetch(rec.db + "/rooms/" + rec.rm + "/meta/round.json"); if (rr.ok) { const cur = await rr.json(); if (cur && cur !== rec.rd) stale = true; } } catch (e) {}
+      }
+      if (rec) stopLive();
+    } else if (c === "J" || c === "j") {
+      try { bad = !join(JSON.parse(td.decode(c === "J" ? ub64u(t.slice(1)) : ub(t.slice(1))))); } catch (e) { bad = true; }
+      if (!bad) history.replaceState(null, "", BASE);
+    } else bad = true;
+    loading = false; render(true);
+    if (!rec && !bad) live();
+  }
+
+  /* ---------- criar festa ---------- */
+  async function create() {
+    if (!DBRE.test(DB)) { msg = "Endereço do banco inválido."; render(); return; }
+    work = "create"; msg = ""; render();
+    try {
+      const room = rid(6), oc = newCode(), s = rid(16), { v } = await derive(oc, s);
+      const x = await fetch(DB + "/rooms/" + room + "/meta.json", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ v: "", oh: { s, h: v } }) });
+      if (!x.ok) throw new Error(x.status);
+      S.rooms[room] = { db: DB, room, org: true, oc, pid: rid(8) }; S.cur = room; save(); resetRoom(); note = "org";
+    } catch (e) { msg = "Não consegui criar a festa. Confira sua conexão."; }
+    work = ""; render(true); if (S.cur) live();
+  }
+  async function demo() {
+    work = "demo"; render();
+    const oc = newCode(), s = rid(16), { v } = await derive(oc, s);
+    MEM = { meta: { v: "R$ 50", t: "Natal de demonstração", oh: { s, h: v } } };
+    S.rooms.demo = { db: "demo", room: "demo", org: true, oc, pid: rid(8), t: "Natal de demonstração" };
+    S.cur = "demo"; save(); resetRoom(); note = "org"; work = ""; render(true); live();
+  }
+
+  /* ---------- leitura da sala ---------- */
+  function me() { const r = R(); return (r && D && D.people && D.people[r.pid]) || null; }
+  function people() { return entries(D && D.people).filter(e => e[1] && typeof e[1] === "object").sort((a, b) => nm(a[1]).localeCompare(nm(b[1]), "pt-BR")); }
+  function fmtDate(s) { const p = String(s).split("-"); if (p.length !== 3) return String(s); const d = new Date(+p[0], +p[1] - 1, +p[2]); return isNaN(d) ? String(s) : d.toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "short" }); }
+  function daysTo(s) { const p = String(s).split("-").map(Number); if (p.length !== 3 || p.some(isNaN)) return null; const t = new Date(); t.setHours(0, 0, 0, 0); return Math.round((new Date(p[0], p[1] - 1, p[2]) - t) / 864e5); }
+  function opts(key) {
+    const P = (D && D.people) || {};
+    return entries(D[key]).filter(e => e[1] && typeof e[1] === "object").map(e => {
+      const vs = (D.votes && D.votes[key] && D.votes[key][e[0]]) || {};
+      const who = Object.keys(vs).filter(p => P[p]);
+      return { k: e[0], t: str(e[1].t, 60), n: who.length, mine: !!vs[R().pid] };
+    }).sort((a, b) => b.n - a.n || (a.k < b.k ? -1 : 1));
+  }
+  function leadRaw(key) { const o = opts(key); return o.length && o[0].n > 0 ? o[0].t : ""; }
+  function revealOpen() { const m = D.meta || {}; if (!m.drawn) return false; if (m.rv) return true; const s = leadRaw("d"), d = s ? daysTo(s) : null; return d !== null && d <= 0; }
+
+  /* ---------- convites e compartilhamento ---------- */
+  const inviteLink = () => { const r = R(); return BASE + "#J" + b64u(te.encode(JSON.stringify({ u: r.db, r: r.room }))); };
+  const title = () => str(D && D.meta && D.meta.t, 50) || "Amigo secreto de Natal";
+  const inviteMsg = () => "🎄 " + title() + "! Entre no mural do amigo secreto: adicione sua dica de presente, vote no melhor dia e sugira local e comida:\n" + inviteLink();
+  const drawnMsg = () => "🎅 O sorteio do " + title() + " saiu! Abra o mural para ver quem você tirou (só você vê):\n" + inviteLink();
+  function wa(m) { window.open("https://wa.me/?text=" + encodeURIComponent(m), "_blank", "noopener"); }
+  function copy(text, btn, box) {
+    const fb = () => {
+      if (box.querySelector("input.cp")) return;
+      const i = h("input", { type: "text", class: "cp", readonly: "readonly", value: text.replace(/\n/g, " "), "aria-label": "Texto para copiar", style: "margin-top:8px" });
+      box.append(i); i.focus(); i.select();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => { btn.textContent = "Copiado ✓"; }, fb); else fb();
+  }
+  function shareRow(fn) {
+    const box = h("div", {}), dis = HOSTED ? null : "disabled";
+    return [h("div", { class: "row" },
+      h("button", { class: "btn", type: "button", disabled: dis, onclick: () => wa(fn()) }, "WhatsApp"),
+      navigator.share ? h("button", { class: "btn alt", type: "button", disabled: dis, onclick: () => { navigator.share({ text: fn() }).catch(() => {}); } }, "Compartilhar") : null,
+      h("button", { class: "btn alt", type: "button", disabled: dis, onclick: e => copy(fn(), e.currentTarget, box) }, "Copiar")), box];
+  }
+  function warn() { return HOSTED ? null : h("p", { class: "err", style: "margin:0 0 14px" }, "⚠️ Você está vendo uma prévia do arquivo, então os convites e links não funcionam aqui. Abra o app pelo endereço do GitHub Pages."); }
+
+  /* ---------- sorteio ---------- */
+  function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const b = new Uint32Array(1); crypto.getRandomValues(b); const j = b[0] % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  async function draw() {
+    const P = people(), m = D.meta || {};
+    const nok = P.filter(e => !e[1].pk).map(e => nm(e[1]));
+    if (nok.length) { msg = "Ainda sem chave de segurança: " + nok.join(", ") + ". Peça para abrirem o mural de novo."; render(); return; }
+    const ids = P.map(e => e[0]), ex = D.ex || {}, cyc = !!m.cyc;
+    const blocked = (a, b) => a === b || !!(ex[a] && ex[a][b]) || !!(ex[b] && ex[b][a]);
+    let ok = null;
+    for (let t = 0; t < 20000 && !ok; t++) {
+      const q = shuffle(ids), map = {}; let good = true;
+      for (let i = 0; i < ids.length && good; i++) {
+        const a = cyc ? q[i] : ids[i], b = cyc ? q[(i + 1) % q.length] : q[i];
+        if (blocked(a, b)) good = false; else map[a] = b;
+      }
+      if (good) ok = map;
+    }
+    if (!ok) { msg = "Com essas restrições não existe sorteio possível" + (cyc ? " em roda" : "") + ". Remova alguma" + (cyc ? " ou desligue o sorteio em roda" : "") + "."; render(); return; }
+    work = "draw"; msg = ""; render();
+    const round = rid(4), res = {}, idm = {};
+    try { for (const a of ids) { res[a] = await seal(D.people[a].pk, { r: ok[a], rd: round }); idm[a] = true; } }
+    catch (e) { work = ""; msg = "Não consegui proteger o sorteio. A chave de alguém está com problema."; render(); return; }
+    await write("", "PATCH", { res, "meta/round": round, "meta/drawn": { at: Date.now(), ids: idm }, rev: null });
+    work = ""; reveal = false; render();
+  }
+
+  /* ---------- ações ---------- */
+  async function joinNow() {
+    const n = dr.n.replace(/\s+/g, " ").trim().slice(0, 30);
+    if (!n) { msg = "Digite seu nome."; render(); return; }
+    if (people().some(e => nm(e[1]).toLowerCase() === n.toLowerCase())) { msg = n + " já está no mural. Se for você, toque no seu nome abaixo."; render(); return; }
+    work = "join"; msg = ""; render();
+    try {
+      const id = await makeIdentity(), r = R();
+      await api("", "PATCH", { ["people/" + r.pid]: { n, w: dr.w.trim().slice(0, 120), pk: id.pk, h: id.h }, ["keys/" + r.pid]: id.keys });
+      r.code = id.code; r.sk = id.sk; save(); note = "me"; dr.w = ""; dr.n = "";
+    } catch (e) { msg = "Não consegui entrar. Confira sua conexão."; }
+    work = ""; refresh(); render();
+  }
+  async function doClaim() {
+    const id = claim, p = D.people && D.people[id], k = D.keys && D.keys[id];
+    if (!p) { claim = null; render(); return; }
+    if (!k || !k.s) { msg = "Não encontrei a chave desse perfil."; render(); return; }
+    work = "claim"; msg = ""; render();
+    try {
+      const { key, v } = await derive(dr.code, k.s);
+      if (v !== p.h) throw new Error("code");
+      const sk = JSON.parse(td.decode(await aesDec(key, k)));
+      Object.assign(R(), { pid: id, code: normCode(dr.code), sk }); save();
+      claim = null; dr.code = ""; mine = { key: "" };
+    } catch (e) { msg = "Código incorreto. Confira e tente de novo."; }
+    work = ""; afterData(); render();
+  }
+  async function doOrgClaim() {
+    const oh = (D.meta || {}).oh; if (!oh) return;
+    work = "org"; msg = ""; render();
+    try {
+      const { v } = await derive(dr.oc, oh.s);
+      if (v !== oh.h) throw new Error("code");
+      const r = R(); r.org = true; r.oc = normCode(dr.oc); save(); orgClaim = false; dr.oc = "";
+    } catch (e) { msg = "Código do organizador incorreto."; }
+    work = ""; render();
+  }
+  function removePerson(id) {
+    const u = { ["people/" + id]: null, ["keys/" + id]: null, ["ex/" + id]: null, ["res/" + id]: null, ["rev/" + id]: null };
+    entries(D.ex).forEach(e => { if (e[0] !== id && e[1] && e[1][id]) u["ex/" + e[0] + "/" + id] = null; });
+    entries(D.qa).forEach(e => { if (e[1] && e[1].to === id) u["qa/" + e[0]] = null; });
+    entries(D.rev).forEach(e => { if (e[1] === id && e[0] !== id) u["rev/" + e[0]] = null; });
+    write("", "PATCH", u);
+  }
+  function addLink(id) {
+    let u = dr.lu.trim(), x;
+    if (!u) return;
+    if (!/^https?:\/\//i.test(u)) u = "https://" + u;
+    try { x = new URL(u); if (!/^https?:$/.test(x.protocol) || !x.hostname.includes(".")) throw 0; } catch (e) { msg = "Esse link não parece válido."; render(); return; }
+    if (x.href.length > 300) { msg = "Link longo demais."; render(); return; }
+    const t = dr.lt.trim().slice(0, 60) || x.hostname.replace(/^www\./, "");
+    write("/people/" + id + "/l/" + rid(4), "PUT", { t, u: x.href }, () => { dr.lt = ""; dr.lu = ""; msg = ""; });
+  }
+
+  /* ---------- telas ---------- */
+  function codeBox(kind) {
+    const r = R(), org = kind === "org";
+    return h("div", { class: "box" },
+      h("p", { style: "margin:0" }, h("b", {}, org ? "🔑 Seu código de organizador" : "🔑 Seu código de recuperação")),
+      h("div", { class: "code" }, org ? r.oc : r.code),
+      h("p", {}, org ? "Anote em lugar seguro. Com ele você recupera o painel do organizador em outro aparelho."
+                     : "Anote ou tire um print. Com ele você entra como você em outro aparelho e vê quem tirou."),
+      h("button", { class: "btn alt", type: "button", onclick: () => { note = ""; render(); } }, "Já anotei"));
+  }
+  function linkList(p) {
+    const l = entries(p && p.l).filter(e => e[1] && /^https?:\/\//i.test(str(e[1].u, 300)));
+    if (!l.length) return null;
+    return h("span", { class: "lk" }, l.map(e => h("a", { href: str(e[1].u, 300), target: "_blank", rel: "noopener noreferrer nofollow" }, "🔗 " + (str(e[1].t, 60) || "link"))));
+  }
+  function countdown() {
+    const s = leadRaw("d"); if (!s) return null;
+    const d = daysTo(s); if (d === null || d < 0) return null;
+    return h("p", { class: "count" }, d === 0 ? "🎉 A festa é hoje!" : d === 1 ? "⏳ A festa é amanhã! (" + fmtDate(s) + ")" : "⏳ Faltam " + d + " dias para a festa (" + fmtDate(s) + ")");
+  }
+
+  function pollSection(label, key, type, ph, hint) {
+    const list = opts(key), top = list.length && list[0].n > 0 ? list[0].k : null, ok = !!me(), r = R();
+    const inp = h("input", { type, value: dr[key] || "", placeholder: ph, maxlength: "60", "aria-label": label, oninput: e => { dr[key] = e.target.value; } });
+    return [
+      h("h2", {}, label),
+      h("ul", {}, list.map(o => h("li", { class: "mini" },
+        h("b", {}, (o.k === top ? "🏆 " : "") + (key === "d" ? fmtDate(o.t) : o.t)),
+        h("span", { class: "row", style: "align-items:center" },
+          h("span", { class: "seen" }, o.n + (o.n === 1 ? " voto" : " votos")),
+          h("button", { class: "btn" + (o.mine ? "" : " alt"), type: "button", disabled: ok ? null : "disabled", onclick: () => write("/votes/" + key + "/" + o.k + "/" + r.pid, o.mine ? "DELETE" : "PUT", true) }, o.mine ? "✓ Meu voto" : "Votar"),
+          r.org ? h("button", { class: "x", type: "button", "aria-label": "Remover opção", onclick: () => write("", "PATCH", { [key + "/" + o.k]: null, ["votes/" + key + "/" + o.k]: null }) }, "×") : null)))),
+      list.length ? null : h("p", { class: "hint" }, hint),
+      h("div", { class: "row", style: "flex-wrap:nowrap;margin-top:10px" }, inp,
+        h("button", { class: "btn", type: "button", disabled: ok ? null : "disabled", onclick: () => {
+          const v = inp.value.trim(); if (!v) return;
+          if (list.some(o => o.t.toLowerCase() === v.toLowerCase())) { dr[key] = ""; inp.value = ""; return; }
+          write("/" + key, "POST", { t: v.slice(0, 60), by: nm(me()) }, () => { dr[key] = ""; });
+        } }, "Sugerir"))
+    ];
+  }
+
+  function qaItem(q, isMe) {
+    const [qid, o] = q, a = str(o.a, 140);
+    return h("div", {},
+      h("p", {}, "❓ " + str(o.q, 140)),
+      a ? h("p", {}, "💬 " + a)
+        : isMe ? h("div", { class: "row" },
+            h("input", { type: "text", value: dr.a[qid] || "", maxlength: "140", placeholder: "Sua resposta", "aria-label": "Responder: " + str(o.q, 140), oninput: e => { dr.a[qid] = e.target.value; } }),
+            h("button", { class: "btn", type: "button", onclick: () => { const v = (dr.a[qid] || "").trim(); if (v) write("/qa/" + qid + "/a", "PUT", v.slice(0, 140), () => { delete dr.a[qid]; }); } }, "Responder"))
+        : h("p", { class: "hint" }, "Aguardando resposta"),
+      R().org ? h("button", { class: "link", type: "button", style: "min-height:32px;font-size:14px", onclick: () => write("/qa/" + qid, "DELETE") }, "remover pergunta") : null);
+  }
+
+  function personCard(e) {
+    const [id, p] = e, r = R(), isMe = id === r.pid, ok = !!me();
+    const others = people().filter(o => o[0] !== id), ex = (D.ex && D.ex[id]) || {};
+    const qs = entries(D.qa).filter(q => q[1] && q[1].to === id).sort((a, b) => a[0] < b[0] ? -1 : 1);
+    const links = entries(p.l).filter(l => l[1] && typeof l[1] === "object");
+    return h("li", { class: "card" },
+      h("div", { class: "top" }, h("b", {}, "🎁 " + nm(p) + (isMe ? " (você)" : "")),
+        r.org && !isMe ? h("button", { class: "x", type: "button", "aria-label": "Remover " + nm(p), onclick: () => { if (confirm("Remover " + nm(p) + " da festa?")) removePerson(id); } }, "×") : null),
+      isMe ? [
+        h("input", { type: "text", value: str(p.w, 120), placeholder: "Sua dica de presente", "aria-label": "Sua dica de presente", maxlength: "120", onchange: ev => write("/people/" + id + "/w", "PUT", ev.target.value.trim()) }),
+        links.length ? h("ul", { class: "links" }, links.map(l => h("li", {},
+          /^https?:\/\//i.test(str(l[1].u, 300)) ? h("a", { class: "lnk", href: str(l[1].u, 300), target: "_blank", rel: "noopener noreferrer nofollow" }, "🔗 " + (str(l[1].t, 60) || "link")) : h("span", {}, str(l[1].t, 60)),
+          h("button", { class: "x", type: "button", "aria-label": "Remover link", onclick: () => write("/people/" + id + "/l/" + l[0], "DELETE") }, "×")))) : null,
+        links.length < 5 ? det("l" + id, "🔗 Adicionar link da lista de desejos",
+          h("input", { type: "text", value: dr.lt, placeholder: "O que é (ex.: livro de receitas)", maxlength: "60", "aria-label": "Nome do item", style: "margin-bottom:8px", oninput: ev => { dr.lt = ev.target.value; } }),
+          h("div", { class: "row", style: "flex-wrap:nowrap" },
+            h("input", { type: "url", value: dr.lu, placeholder: "https://…", maxlength: "300", "aria-label": "Link do item", oninput: ev => { dr.lu = ev.target.value; } }),
+            h("button", { class: "btn", type: "button", onclick: () => addLink(id) }, "Salvar"))) : null
+      ] : [h("p", { style: "margin:0;color:var(--ink)" }, str(p.w, 120) || "Ainda sem dica"), linkList(p)],
+      qs.length ? h("div", { class: "qa" }, qs.map(q => qaItem(q, isMe))) : null,
+      !isMe && ok ? det("q" + id, "❓ Perguntar anonimamente",
+        h("div", { class: "row", style: "flex-wrap:nowrap" },
+          h("input", { type: "text", value: dr.q[id] || "", maxlength: "140", placeholder: "Ex.: chocolate ou vinho?", "aria-label": "Pergunta anônima para " + nm(p), oninput: ev => { dr.q[id] = ev.target.value; } }),
+          h("button", { class: "btn", type: "button", onclick: () => { const q = (dr.q[id] || "").trim(); if (q) write("/qa/" + rid(6), "PUT", { to: id, q: q.slice(0, 140) }, () => { dr.q[id] = ""; }); } }, "Enviar")),
+        h("p", { class: "hint" }, "Ninguém fica sabendo quem perguntou. Todo mundo vê a pergunta e a resposta.")) : null,
+      r.org && others.length ? det("x" + id, "🚫 Não pode tirar…", others.map(o => h("label", { class: "chk" },
+        h("input", { type: "checkbox", checked: ex[o[0]] ? "checked" : null, onchange: ev => write("/ex/" + id + "/" + o[0], ev.target.checked ? "PUT" : "DELETE", true) }), nm(o[1])))) : null);
+  }
+
+  function joinBlock() {
+    const r = R();
+    if (me()) return note === "me" && r.code ? codeBox("me") : null;
+    if (claim && D.people && D.people[claim]) return claimBlock();
+    const P = people(), dis = work ? "disabled" : null;
+    return [
+      h("h2", {}, "👋 Entre no mural"),
+      h("label", { class: "lab" }, "Seu nome", h("input", { type: "text", value: dr.n, maxlength: "30", autocomplete: "given-name", oninput: e => { dr.n = e.target.value; } })),
+      h("label", { class: "lab" }, "Sua dica de presente", h("input", { type: "text", value: dr.w, maxlength: "120", placeholder: "Ex.: livros, café, plantas", oninput: e => { dr.w = e.target.value; } })),
+      h("button", { class: "btn", type: "button", disabled: dis, onclick: joinNow }, work === "join" ? "Entrando…" : "Entrar no mural"),
+      P.length ? [h("p", { class: "hint", style: "margin-top:14px" }, "Já entrou por outro aparelho? Toque no seu nome:"),
+        h("div", { class: "row", style: "margin-top:8px" }, P.map(e => h("button", { class: "btn alt", type: "button", onclick: () => { claim = e[0]; dr.code = ""; msg = ""; render(); } }, nm(e[1]))))] : null
+    ];
+  }
+  function claimBlock() {
+    const p = D.people[claim];
+    const cancel = h("button", { class: "link", type: "button", onclick: () => { claim = null; msg = ""; render(); } }, "Cancelar");
+    if (!p.h) return [
+      h("h2", {}, "🔑 Entrar como " + nm(p)),
+      h("p", {}, "Este perfil é de uma versão antiga do app e não tem código. Se for você, toque abaixo."),
+      h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { R().pid = claim; save(); claim = null; msg = ""; afterData(); render(); } }, "Sou " + nm(p)), cancel)];
+    return [
+      h("h2", {}, "🔑 Entrar como " + nm(p)),
+      h("p", {}, "Digite o código de recuperação que apareceu quando você entrou no mural."),
+      h("label", { class: "lab" }, "Código de recuperação", h("input", { type: "text", value: dr.code, placeholder: "XXXXX-XXXXX", autocomplete: "off", autocapitalize: "characters", spellcheck: "false", oninput: e => { dr.code = e.target.value; } })),
+      h("p", { class: "err", "aria-live": "polite" }, msg),
+      h("div", { class: "row" }, h("button", { class: "btn", type: "button", disabled: work ? "disabled" : null, onclick: doClaim }, work === "claim" ? "Conferindo…" : "Entrar"), cancel)];
+  }
+
+  function resultBlock() {
+    const r = R(), m = D.meta || {}, p = me();
+    if (!m.drawn || !p) return null;
+    const box = D.res && D.res[r.pid], head = h("h2", {}, "🎅 Seu amigo secreto");
+    if (!box) return [head, h("div", { class: "box warnbox" }, h("p", { style: "margin:0" }, "O sorteio já foi feito, mas você entrou depois. Peça ao organizador para refazer o sorteio."))];
+    if (!r.sk) return [head, h("p", {}, "Para ver seu resultado neste aparelho, toque em “Sair desta festa neste aparelho”, abra o convite de novo e entre com seu código de recuperação.")];
+    if (mine.err) return [head, h("p", {}, "Não consegui abrir seu resultado neste aparelho. Peça ao organizador para refazer o sorteio.")];
+    if (!mine.r) return [head, h("p", {}, "Abrindo seu resultado…")];
+    const rp = D.people && D.people[mine.r.r];
+    if (!reveal) return [head,
+      h("p", {}, "Só você vê este resultado. Confira se ninguém está olhando."),
+      h("button", { class: "btn wide", type: "button", style: "margin-top:4px", onclick: () => { reveal = true; render(); } }, "🎁 Mostrar quem eu tirei")];
+    const rows = [];
+    if (rp) { if (rp.w) rows.push(["Dica", str(rp.w, 120)]); const lk = linkList(rp); if (lk) rows.push(["Lista", lk]); }
+    if (m.v) rows.push(["Valor", str(m.v, 40)]);
+    const dd = leadRaw("d"), pl = leadRaw("p"), fd = leadRaw("f");
+    if (dd) rows.push(["Data", fmtDate(dd)]);
+    if (pl) rows.push(["Local", pl]);
+    if (fd) rows.push(["Comida", fd]);
+    const revd = D.rev && D.rev[r.pid];
+    return [head,
+      h("div", { class: "tag" }, h("small", {}, nm(p) + ", você tirou"), h("strong", {}, rp ? nm(rp) : "Alguém que saiu da festa")),
+      rp ? null : h("p", { class: "err" }, "Essa pessoa saiu depois do sorteio. Peça ao organizador para refazer."),
+      rows.length ? h("dl", {}, rows.map(x => [h("dt", {}, x[0]), h("dd", {}, x[1])])) : null,
+      revealOpen() && rp && !revd ? h("button", { class: "btn wide", type: "button", onclick: () => { if (confirm("Mostrar para todo mundo no mural que você tirou " + nm(rp) + "?")) write("/rev/" + r.pid, "PUT", mine.r.r); } }, "🎉 Revelar no mural") : null,
+      h("button", { class: "btn alt wide", type: "button", onclick: () => { reveal = false; render(); } }, "Esconder")];
+  }
+
+  function revealList() {
+    const P = (D.people) || {};
+    const rv = entries(D.rev).filter(e => P[e[0]] && typeof e[1] === "string" && P[e[1]]);
+    if (!rv.length) return null;
+    return [h("h2", {}, "🎉 Revelações"),
+      h("ul", {}, rv.map(e => h("li", { class: "mini" }, h("b", {}, nm(P[e[0]]) + " tirou " + nm(P[e[1]])))))];
+  }
+
+  function orgPanel() {
+    const m = D.meta || {}, dw = m.drawn, P = people(), n = P.length;
+    const cycBox = h("label", { class: "chk" }, h("input", { type: "checkbox", checked: m.cyc ? "checked" : null, onchange: e => write("/meta/cyc", "PUT", e.target.checked) }), "Sorteio em roda (ninguém tira quem tirou a pessoa)");
+    if (!dw) return [h("h2", {}, "🎅 Sorteio"), cycBox,
+      h("button", { class: "btn wide", type: "button", disabled: n < 3 || work ? "disabled" : null, onclick: draw }, work === "draw" ? "Sorteando…" : n < 3 ? "Sortear (faltam " + (3 - n) + ")" : "🎅 Sortear " + n + " pessoas")];
+    const ids = (dw.ids && typeof dw.ids === "object") ? dw.ids : {};
+    const late = P.filter(e => !ids[e[0]]).map(e => nm(e[1]));
+    const gone = Object.keys(ids).filter(x => !(D.people && D.people[x])).length;
+    return [
+      h("h2", {}, "🎅 Sorteio feito!"),
+      h("p", {}, "Cada pessoa vê quem tirou aqui no mural, protegido no aparelho dela. Nem você consegue ver o resultado dos outros."),
+      late.length || gone ? h("div", { class: "box warnbox" },
+        late.length ? h("p", { style: "margin:0 0 6px" }, "Entraram depois do sorteio: " + late.join(", ") + ".") : null,
+        gone ? h("p", { style: "margin:0 0 6px" }, gone + (gone === 1 ? " pessoa saiu" : " pessoas saíram") + " depois do sorteio.") : null,
+        h("p", { style: "margin:0" }, h("b", {}, "Refaça o sorteio para incluir todo mundo."))) : null,
+      h("p", { style: "margin:12px 0 8px" }, "Avise a galera que o sorteio saiu:"), shareRow(drawnMsg),
+      h("label", { class: "chk", style: "margin-top:14px" }, h("input", { type: "checkbox", checked: m.rv ? "checked" : null, onchange: e => write("/meta/rv", "PUT", e.target.checked) }), "Liberar a revelação agora"),
+      h("p", { class: "hint" }, "No dia mais votado, a revelação libera sozinha: cada um pode mostrar no mural quem tirou."),
+      cycBox,
+      h("button", { class: "link", type: "button", disabled: work ? "disabled" : null, onclick: () => { if (confirm("Refazer o sorteio? Todo mundo vai tirar de novo.")) draw(); } }, work === "draw" ? "Sorteando…" : "Refazer o sorteio")];
+  }
+
+  function footer() {
+    const r = R(), m = D.meta || {};
+    return h("div", { class: "foot" },
+      r.code || r.oc ? det("codes", "🔑 Meus códigos",
+        r.code ? [h("p", { class: "hint" }, "Recuperação (você no mural):"), h("div", { class: "code" }, r.code)] : null,
+        r.oc ? [h("p", { class: "hint" }, "Organizador:"), h("div", { class: "code" }, r.oc)] : null) : null,
+      !r.org && m.oh ? (orgClaim ? [
+        h("label", { class: "lab", style: "margin-top:12px" }, "Código do organizador", h("input", { type: "text", value: dr.oc, placeholder: "XXXXX-XXXXX", autocomplete: "off", autocapitalize: "characters", spellcheck: "false", oninput: e => { dr.oc = e.target.value; } })),
+        h("p", { class: "err", "aria-live": "polite" }, msg),
+        h("div", { class: "row" }, h("button", { class: "btn", type: "button", disabled: work ? "disabled" : null, onclick: doOrgClaim }, work === "org" ? "Conferindo…" : "Confirmar"),
+          h("button", { class: "link", type: "button", onclick: () => { orgClaim = false; msg = ""; render(); } }, "Cancelar"))
+      ] : h("button", { class: "link", type: "button", onclick: () => { orgClaim = true; msg = ""; render(); } }, "Sou o organizador")) : null,
+      h("div", { class: "row", style: "margin-top:8px" },
+        h("button", { class: "link", type: "button", onclick: home }, "Minhas festas"),
+        h("button", { class: "link", type: "button", onclick: () => { if (confirm("Sair desta festa neste aparelho? Para voltar depois, você vai precisar do convite e do seu código.")) forget(S.cur); } }, "Sair desta festa neste aparelho")));
+  }
+
+  function roomView() {
+    if (!D) return [h("p", {}, "Carregando o mural…")];
+    const r = R(), m = D.meta || {}, P = people(), n = P.length;
+    const top = claim || orgClaim ? "" : msg;
+    const out = [h("h1", {}, "🎄 " + (str(m.t, 50) || "Amigo Secreto")), warn(),
+      h("p", { class: "err", "aria-live": "polite", style: "margin:0 0 8px" }, top || (off ? "Sem conexão com o banco. Tentando de novo…" : "")),
+      countdown()];
+    if (note === "org" && r.oc) out.push(codeBox("org"));
+    if (r.org) out.push(
+      h("p", {}, "Convide a galera. Cada amigo entra pelo convite e já aparece no mural."), shareRow(inviteMsg),
+      h("label", { class: "lab", style: "margin-top:16px" }, "Nome da festa", h("input", { type: "text", value: str(m.t, 50), placeholder: "Ex.: Natal da família", maxlength: "50", onchange: e => write("/meta/t", "PUT", e.target.value.trim()) })),
+      h("label", { class: "lab" }, "Valor sugerido", h("input", { type: "text", value: str(m.v, 40), placeholder: "Ex.: R$ 50", maxlength: "40", onchange: e => write("/meta/v", "PUT", e.target.value.trim()) })));
+    else if (m.v) out.push(h("p", {}, "Valor sugerido: ", h("b", {}, str(m.v, 40))));
+    out.push(resultBlock(), joinBlock(),
+      h("h2", {}, "🎁 Mural de dicas (" + n + ")"),
+      n ? h("ul", {}, P.map(personCard)) : h("p", { class: "hint" }, "Ninguém entrou ainda."),
+      r.db === "demo" ? h("button", { class: "btn alt", type: "button", style: "margin-top:12px", onclick: async () => {
+        const k = await genKeys(), base = ["Ana", "Bia", "Caio", "Duda", "Edu", "Fê"][Math.floor(Math.random() * 6)], w = ["livros", "café especial", "plantas", "meias de Natal", "jogos de tabuleiro"][Math.floor(Math.random() * 5)];
+        write("/people/" + rid(4), "PUT", { n: base + " " + Math.floor(Math.random() * 90 + 10), w, pk: k.pk, h: "" });
+      } }, "+ amigo fictício (demonstração)") : null,
+      pollSection("📅 Qual dia?", "d", "date", "", "Sugira uma data e todo mundo vota nos dias que preferir."),
+      pollSection("📍 Onde?", "p", "text", "Sugerir um local", "Sugira um local para a festa."),
+      pollSection("🍽️ O que vamos comer?", "f", "text", "Sugerir um tipo de comida", "Sugira o que vai rolar de comida."),
+      revealList(), r.org ? orgPanel() : null, footer());
     return out;
   }
 
-  function details(w,v,d,l,f){
-    var rows=[];
-    if(w)rows.push(["Dicas de presente",w]);
-    if(v)rows.push(["Valor",v]);
-    if(d)rows.push(["Data",d]);
-    if(l)rows.push(["Local",l]);
-    if(f)rows.push(["Comida",f]);
-    if(!rows.length)return null;
-    var dl=h("dl",{});
-    rows.forEach(function(r){dl.append(h("dt",{},r[0]),h("dd",{},r[1]));});
-    return dl;
-  }
-  function wall(a){
-    var k=Object.keys(a||{});
-    if(!k.length)return null;
-    return h("details",{class:"wall",style:"margin-top:22px"},h("summary",{},"🎁 Mural de dicas de todo mundo"),
-      k.map(function(n){return h("p",{},h("b",{},n+": "),h("span",{},a[n]));}));
-  }
-  function recView(){
-    if(!shown)return [
-      h("p",{class:"hand"},"🎄 Amigo secreto de"),h("div",{class:"who"},rec.g),
-      h("p",{},"Só "+rec.g+" deve ver a próxima tela. Confira se ninguém está olhando."),
-      h("button",{class:"btn wide",type:"button",onclick:function(){shown=true;render();}},"🎁 Mostrar quem eu tirei")
-    ];
+  function homeView() {
+    const rs = Object.values(S.rooms).filter(x => x && x.room && x.room !== "demo");
     return [
-      h("div",{class:"tag"},h("small",{},rec.g+", você tirou"),h("strong",{},rec.r)),
-      details(rec.w,rec.v,rec.d,rec.l,rec.f),wall(rec.a),
-      h("p",{style:"margin-top:20px"},"Guarde o segredo. Você pode voltar a este link quando quiser."),
-      h("button",{class:"btn alt wide",type:"button",onclick:function(){shown=false;render();}},"Esconder")
+      h("h1", {}, "🎄 Amigo Secreto"),
+      h("p", {}, "Crie a festa, convide a galera e deixe todo mundo adicionar dicas, votar no mural e ver quem tirou, sem ninguém espiar."),
+      h("p", { class: "err", "aria-live": "polite" }, msg),
+      h("button", { class: "btn wide", type: "button", disabled: work ? "disabled" : null, onclick: create }, work === "create" ? "Criando…" : "Criar uma festa"),
+      h("button", { class: "btn alt wide", type: "button", disabled: work ? "disabled" : null, onclick: demo }, "Ver demonstração, sem banco"),
+      rs.length ? [h("h2", {}, "🎄 Minhas festas"), h("ul", {}, rs.map(x => h("li", { class: "mini" },
+        h("b", {}, (x.t || "Festa " + x.room.slice(0, 4)) + (x.org ? " · organizador" : "")),
+        h("span", { class: "row", style: "align-items:center" },
+          h("button", { class: "btn", type: "button", onclick: () => openRoom(x.room) }, "Abrir"),
+          h("button", { class: "x", type: "button", "aria-label": "Esquecer esta festa", onclick: () => { if (confirm("Esquecer esta festa neste aparelho?")) forget(x.room); } }, "×")))))] : null
     ];
   }
 
-  function render(top){
-    app.replaceChildren();
-    var c;
-    if(loading)c=[h("p",{},"Abrindo…")];
-    else if(rec)c=recView();
-    else if(bad)c=[h("h1",{},"Link inválido"),h("p",{},"Este link está incompleto ou foi alterado. Peça ao organizador para enviar de novo.")];
-    else if(L.db&&L.room)c=roomView();
-    else c=setupView();
-    c.flat(Infinity).forEach(function(x){if(x)app.append(x);});
-    if(top===true)window.scrollTo(0,0);
+  /* ---------- links de resultado da versão antiga (#x…) ---------- */
+  async function dec(t) {
+    try {
+      if (t.length < 90 || t.length % 2 === 0) return null;
+      const s = t.slice(1), key = await sub.importKey("raw", ub(s.slice(0, 32)), "AES-GCM", false, ["decrypt"]);
+      const pt = await sub.decrypt({ name: "AES-GCM", iv: ub(s.slice(32, 56)) }, key, ub(s.slice(56)));
+      const o = JSON.parse(td.decode(pt)); return o && o.g && o.r ? o : null;
+    } catch (e) { return null; }
+  }
+  function recView() {
+    if (stale) return [h("h1", {}, "Sorteio refeito"), h("p", {}, "O organizador refez o sorteio, então este link não vale mais. Peça o link novo a ele.")];
+    if (!shown) return [
+      h("p", { class: "hand" }, "🎄 Amigo secreto de"), h("div", { class: "who" }, rec.g),
+      h("p", {}, "Só " + rec.g + " deve ver a próxima tela. Confira se ninguém está olhando."),
+      h("button", { class: "btn wide", type: "button", onclick: () => { shown = true; render(); } }, "🎁 Mostrar quem eu tirei")];
+    const rows = [["Dicas de presente", rec.w], ["Valor", rec.v], ["Data", rec.d], ["Local", rec.l], ["Comida", rec.f]].filter(x => x[1]);
+    const a = Object.keys(rec.a || {});
+    return [
+      h("div", { class: "tag" }, h("small", {}, rec.g + ", você tirou"), h("strong", {}, rec.r)),
+      rows.length ? h("dl", {}, rows.map(x => [h("dt", {}, x[0]), h("dd", {}, String(x[1]))])) : null,
+      a.length ? h("details", { class: "wall", style: "margin-top:22px" }, h("summary", {}, "🎁 Mural de dicas de todo mundo"), a.map(n => h("p", {}, h("b", {}, n + ": "), h("span", {}, String(rec.a[n]))))) : null,
+      h("p", { style: "margin-top:20px" }, "Guarde o segredo. Você pode voltar a este link quando quiser."),
+      h("button", { class: "btn alt wide", type: "button", onclick: () => { shown = false; render(); } }, "Esconder")];
   }
 
-  load();readHash();
-  window.addEventListener("hashchange",readHash);
-  setInterval(function(){if(!document.hidden&&L.db&&L.room&&!rec&&!bad&&!loading)poll();},4000);
+  function render(top) {
+    dirty = false;
+    let c;
+    if (loading) c = [h("p", {}, "Abrindo…")];
+    else if (rec) c = recView();
+    else if (bad) c = [h("h1", {}, "Link inválido"), h("p", {}, "Este link está incompleto ou foi alterado. Peça ao organizador para enviar de novo."),
+      h("button", { class: "btn alt wide", type: "button", onclick: () => { history.replaceState(null, "", BASE); readHash(); } }, "Ir para o início")];
+    else if (R()) c = roomView();
+    else c = homeView();
+    app.replaceChildren();
+    [c].flat(Infinity).forEach(x => { if (x) app.append(x); });
+    if (top === true) window.scrollTo(0, 0);
+  }
+
+  /* um toque em andamento segura o redesenho, para o clique não cair num botão que sumiu */
+  document.addEventListener("pointerdown", () => { ptr = true; }, true);
+  const release = () => setTimeout(() => { ptr = false; flush(); }, 350);
+  document.addEventListener("pointerup", release, true);
+  document.addEventListener("pointercancel", release, true);
+  setInterval(flush, 400);
+
+  load(); readHash();
+  window.addEventListener("hashchange", readHash);
+  if (HOSTED && "serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1"))
+    navigator.serviceWorker.register("sw.js").catch(() => {});
 })();
 </script>
 </body>
