@@ -6,7 +6,7 @@ Mural de amigo secreto: cada pessoa entra pelo convite, deixa dicas e links de p
 
 O app é publicado pelo GitHub Pages direto deste repositório. Basta que as mudanças cheguem ao branch configurado em **Settings → Pages** (normalmente `main`, pasta raiz).
 
-Todos estes arquivos precisam ficar juntos na raiz: `index.html`, `sw.js`, `manifest.webmanifest`, `icon.svg`, `icon-192.png`, `icon-512.png`.
+Todos estes arquivos precisam ficar juntos na raiz: `index.html`, `app.js`, `privacidade.html`, `sw.js`, `manifest.webmanifest`, `icon.svg`, `icon-192.png`, `icon-512.png` e a pasta `fonts/`.
 
 Funciona no endereço `https://<usuário>.github.io/amigo-secreto/` (os caminhos são relativos). No celular, dá para usar "Adicionar à tela inicial".
 
@@ -31,3 +31,10 @@ Com essas regras:
 - O código de recuperação permite entrar como você em outro aparelho. O **código do organizador** recupera o painel do organizador.
 
 Limitação conhecida: sem login (Firebase Auth), o banco não tem como saber quem está escrevendo. Quem tiver o convite consegue, mexendo no banco por fora do app, alterar dados da festa. O resultado do sorteio, porém, continua secreto.
+
+## Privacidade e segurança no navegador
+
+- **Política de privacidade** em `privacidade.html`. ⚠️ Antes de divulgar o app, preencha `[NOME DO RESPONSÁVEL]` e `[E-MAIL DE CONTATO]`. É um rascunho: vale uma revisão jurídica.
+- **"Apagar meus dados"**, no rodapé da festa: remove na hora nome, dica, links, votos, chaves e perguntas da pessoa (direito de exclusão, art. 18 da LGPD).
+- **Sem pedidos a terceiros:** as fontes (Fredoka e Nunito, licença SIL OFL, em `fonts/`) são servidas pelo próprio site, então o IP de quem visita não vai para o Google Fonts.
+- **Content-Security-Policy** via `<meta>`: só roda script do próprio site (`app.js`) e só conecta ao Firebase. Isso bloqueia scripts injetados.
