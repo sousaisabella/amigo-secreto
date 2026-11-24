@@ -1,0 +1,12 @@
+{
+  "name": "amigo-secreto",
+  "private": true,
+  "description": "Gera vendor/firebase-auth.js. O site em si não tem etapa de build.",
+  "scripts": {
+    "build": "esbuild build/auth-entry.js --bundle --minify --format=iife --target=es2020 --legal-comments=eof --outfile=vendor/firebase-auth.js"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "firebase": "13.2.0"
+  }
+}
