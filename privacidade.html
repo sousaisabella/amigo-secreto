@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#D62839">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; script-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Política de privacidade</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:"Nunito";font-weight:400;font-display:swap;src:url(fonts/nunito-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Nunito";font-weight:700;font-display:swap;src:url(fonts/nunito-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Fredoka";font-weight:700;font-display:swap;src:url(fonts/fredoka-latin-700-normal.woff2) format("woff2")}
+:root{--bg:#F4F9F5;--surface:#FFFFFF;--ink:#173B2E;--muted:#587267;--line:#CBE0D3;--accent:#D62839;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F3D2E;--surface:#17503D;--ink:#FFF8EC;--muted:#B5D1C4;--line:#2F7059;--accent:#E8394B;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F3D2E;--surface:#17503D;--ink:#FFF8EC;--muted:#B5D1C4;--line:#2F7059;--accent:#E8394B;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 "Nunito",system-ui,sans-serif}
+.cane{height:12px;background:repeating-linear-gradient(45deg,var(--accent) 0 14px,#fff 14px 28px)}
+main{max-width:640px;margin:0 auto;padding:24px 16px 64px}
+h1,h2{font-family:"Fredoka","Nunito",sans-serif;line-height:1.15}
+h1{font-size:clamp(30px,8vw,40px);margin:0 0 6px}
+h2{font-size:21px;margin:30px 0 8px}
+p,li{color:var(--ink)}
+.muted{color:var(--muted)}
+ul{padding-left:22px}
+li{margin-bottom:6px}
+a{color:var(--ink);font-weight:700}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:2px solid var(--line);border-radius:12px;overflow:hidden;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted)}
+.wrap{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="cane"></div>
+<main>
+<p><a href="./">← Voltar ao app</a></p>
+<h1>Política de privacidade</h1>
+<p class="muted">Última atualização: 24 de novembro de 2026</p>
+
+<p>O Amigo Secreto é um mural para organizar sorteios entre amigos. Esta página explica quais dados o app usa, por quê, onde eles ficam e como você pode apagá-los, de acordo com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018, LGPD).</p>
+
+<h2>Quem é o responsável</h2>
+<p>Controlador dos dados: <strong>Isabella</strong>. Contato para assuntos de privacidade: <a href="mailto:Isabellamaria41@gmail.com">Isabellamaria41@gmail.com</a>.</p>
+
+<h2>Quais dados usamos</h2>
+<div class="wrap"><table>
+<tr><th>Dado</th><th>Para quê</th></tr>
+<tr><td>Nome que você digita</td><td>Mostrar você no mural e no sorteio.</td></tr>
+<tr><td>Dica de presente e links da lista de desejos</td><td>Ajudar quem tirar você a escolher o presente.</td></tr>
+<tr><td>Votos e sugestões de data, local e comida</td><td>Organizar a festa.</td></tr>
+<tr><td>Perguntas anônimas e respostas</td><td>Permitir perguntas ao amigo secreto. O app não guarda quem perguntou.</td></tr>
+<tr><td>Chave pública e chave privada cifrada</td><td>Proteger o resultado do sorteio. A chave privada só é aberta com o seu código de recuperação.</td></tr>
+<tr><td>Resultado do sorteio (cifrado)</td><td>Mostrar a você quem você tirou. Ninguém mais consegue ler, nem o organizador.</td></tr>
+</table></div>
+<p>Não pedimos e-mail, telefone, CPF nem senha. O app não tem anúncios, não usa cookies, não usa ferramentas de análise e não vende nem compartilha dados.</p>
+
+<h2>Base legal</h2>
+<p>Usamos esses dados para executar o serviço que você pediu ao entrar na festa (art. 7º, V, da LGPD) e com o seu consentimento ao preencher o mural (art. 7º, I). Não preencha dados que você não queira mostrar às outras pessoas da festa.</p>
+
+<h2>Quem vê os seus dados</h2>
+<ul>
+<li>Seu nome, dica, links, votos e as perguntas feitas a você ficam visíveis para <strong>quem tem o convite da festa</strong>.</li>
+<li>O resultado do sorteio fica cifrado e só pode ser aberto no seu aparelho.</li>
+<li>Os dados ficam no <strong>Firebase Realtime Database</strong>, serviço do Google, em servidores nos Estados Unidos. Isso é uma transferência internacional de dados (art. 33 da LGPD), feita a um provedor com garantias contratuais de proteção.</li>
+</ul>
+
+<h2>No seu aparelho</h2>
+<p>O app guarda no armazenamento local do navegador as festas que você abriu, seus códigos e sua chave privada, e se a música de fundo está ligada. Esses dados não saem do aparelho, exceto a chave privada, que vai ao banco cifrada com o seu código. Você pode apagá-los limpando os dados do site no navegador.</p>
+
+<h2>Por quanto tempo</h2>
+<p>Os dados ficam guardados enquanto a festa existir. Você pode apagar os seus a qualquer momento, e o organizador pode remover qualquer participante. <strong>[Em breve: festas apagadas automaticamente 60 dias após a data da festa.]</strong></p>
+
+<h2>Seus direitos</h2>
+<p>Pela LGPD (art. 18), você pode confirmar se tratamos seus dados, acessá-los, corrigi-los, pedir a exclusão e revogar o consentimento. Para isso:</p>
+<ul>
+<li><strong>Corrigir:</strong> edite sua dica e seus links direto no mural.</li>
+<li><strong>Apagar:</strong> no fim da página da festa, toque em <strong>“Apagar meus dados”</strong>. Seu nome, dica, links, votos, chaves e perguntas feitas a você são removidos na hora.</li>
+<li><strong>Outros pedidos ou dúvidas:</strong> escreva para <a href="mailto:Isabellamaria41@gmail.com">Isabellamaria41@gmail.com</a>. Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</li>
+</ul>
+
+<h2>Crianças e adolescentes</h2>
+<p>Menores de 18 anos devem usar o app com acompanhamento de um responsável.</p>
+
+<h2>Mudanças</h2>
+<p>Se esta política mudar, a data no topo da página será atualizada.</p>
+</main>
+</body>
+</html>
