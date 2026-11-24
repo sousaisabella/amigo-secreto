@@ -52,23 +52,25 @@ th{color:var(--muted)}
 <tr><td>Dica de presente e links da lista de desejos</td><td>Ajudar quem tirar você a escolher o presente.</td></tr>
 <tr><td>Votos e sugestões de data, local e comida</td><td>Organizar a festa.</td></tr>
 <tr><td>Perguntas anônimas e respostas</td><td>Permitir perguntas ao amigo secreto. O app não guarda quem perguntou.</td></tr>
-<tr><td>Chave pública e chave privada cifrada</td><td>Proteger o resultado do sorteio. A chave privada só é aberta com o seu código de recuperação.</td></tr>
+<tr><td>Conta: um identificador anônimo ou, se você entrar com o Google, seu nome e e-mail da conta Google</td><td>Garantir que só você edite seus dados e só o organizador sorteie. Com o Google, também lembrar suas festas em outros aparelhos.</td></tr>
+<tr><td>Chave do resultado (par de chaves)</td><td>Proteger o resultado do sorteio. A chave pública fica no mural. A privada fica no seu aparelho e, se você entrar com o Google, também numa área da sua conta que só você consegue ler.</td></tr>
 <tr><td>Resultado do sorteio (cifrado)</td><td>Mostrar a você quem você tirou. Ninguém mais consegue ler, nem o organizador.</td></tr>
 </table></div>
-<p>Não pedimos e-mail, telefone, CPF nem senha. O app não tem anúncios, não usa cookies, não usa ferramentas de análise e não vende nem compartilha dados.</p>
+<p>Convidados não precisam de login: o app cria uma conta anônima, sem nenhum dado pessoal. Para <strong>criar</strong> uma festa é preciso entrar com o Google, e então recebemos do Google apenas seu nome e e-mail. Não pedimos telefone, CPF nem senha. O app não tem anúncios, não usa cookies, não usa ferramentas de análise e não vende nem compartilha dados.</p>
 
 <h2>Base legal</h2>
 <p>Usamos esses dados para executar o serviço que você pediu ao entrar na festa (art. 7º, V, da LGPD) e com o seu consentimento ao preencher o mural (art. 7º, I). Não preencha dados que você não queira mostrar às outras pessoas da festa.</p>
 
 <h2>Quem vê os seus dados</h2>
 <ul>
-<li>Seu nome, dica, links, votos e as perguntas feitas a você ficam visíveis para <strong>quem tem o convite da festa</strong>.</li>
+<li>Seu nome, dica, links, votos e as perguntas feitas a você ficam visíveis para <strong>quem tem o convite da festa</strong>. Seu e-mail <strong>não</strong> aparece para ninguém.</li>
+<li>As regras do banco garantem que só você edite seus dados, só o organizador sorteie e ninguém leia a área privada da sua conta. Como responsável técnica pelo banco, a administradora do app tem acesso técnico aos dados guardados, e não os consulta nem usa para outro fim.</li>
 <li>O resultado do sorteio fica cifrado e só pode ser aberto no seu aparelho.</li>
-<li>Os dados ficam no <strong>Firebase Realtime Database</strong>, serviço do Google, em servidores nos Estados Unidos. Isso é uma transferência internacional de dados (art. 33 da LGPD), feita a um provedor com garantias contratuais de proteção.</li>
+<li>Os dados ficam no <strong>Firebase Realtime Database</strong>, serviço do Google, em servidores nos Estados Unidos, e o login usa o <strong>Firebase Authentication</strong>, também do Google. Isso é uma transferência internacional de dados (art. 33 da LGPD), feita a um provedor com garantias contratuais de proteção.</li>
 </ul>
 
 <h2>No seu aparelho</h2>
-<p>O app guarda no armazenamento local do navegador as festas que você abriu, seus códigos e sua chave privada, e se a música de fundo está ligada. Esses dados não saem do aparelho, exceto a chave privada, que vai ao banco cifrada com o seu código. Você pode apagá-los limpando os dados do site no navegador.</p>
+<p>O app guarda no armazenamento local do navegador as festas que você abriu, sua chave privada, a sessão de login e se a música de fundo está ligada. Você pode apagá-los tocando em “Sair da conta” ou limpando os dados do site no navegador.</p>
 
 <h2>Por quanto tempo</h2>
 <p>Os dados ficam guardados enquanto a festa existir. Você pode apagar os seus a qualquer momento, e o organizador pode remover qualquer participante. <strong>[Em breve: festas apagadas automaticamente 60 dias após a data da festa.]</strong></p>
@@ -77,7 +79,8 @@ th{color:var(--muted)}
 <p>Pela LGPD (art. 18), você pode confirmar se tratamos seus dados, acessá-los, corrigi-los, pedir a exclusão e revogar o consentimento. Para isso:</p>
 <ul>
 <li><strong>Corrigir:</strong> edite sua dica e seus links direto no mural.</li>
-<li><strong>Apagar:</strong> no fim da página da festa, toque em <strong>“Apagar meus dados”</strong>. Seu nome, dica, links, votos, chaves e perguntas feitas a você são removidos na hora.</li>
+<li><strong>Apagar:</strong> no fim da página da festa, toque em <strong>“Apagar meus dados”</strong>. Seu nome, dica, links, votos, chaves e perguntas feitas a você são removidos na hora. O organizador também pode tocar em <strong>“Apagar a festa”</strong> para remover a festa inteira.</li>
+<li><strong>Apagar a conta:</strong> escreva para o e-mail de contato abaixo e removemos sua conta e tudo ligado a ela.</li>
 <li><strong>Outros pedidos ou dúvidas:</strong> escreva para <a href="mailto:Isabellamaria41@gmail.com">Isabellamaria41@gmail.com</a>. Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</li>
 </ul>
 
