@@ -63,6 +63,7 @@ dt{color:var(--muted)}dd{margin:0;font-weight:700}
 .foot{margin-top:28px}
 @media (prefers-reduced-motion:reduce){.tag,body::before{animation:none}}
 
+.lab input{display:block;width:100%;max-width:100%}
 .hint{font-size:15px;color:var(--muted);margin:6px 0 0}
 .steps{margin:0 0 16px;padding-left:22px;color:var(--muted)}
 .steps li{margin-bottom:6px}
@@ -350,7 +351,7 @@ input[type=date]{min-height:48px}
     else if(bad)c=[h("h1",{},"Link inválido"),h("p",{},"Este link está incompleto ou foi alterado. Peça ao organizador para enviar de novo.")];
     else if(L.db&&L.room)c=roomView();
     else c=setupView();
-    c.forEach(function(x){if(x)app.append(x);});
+    c.flat(Infinity).forEach(function(x){if(x)app.append(x);});
     if(top===true)window.scrollTo(0,0);
   }
 
