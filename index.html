@@ -398,7 +398,7 @@ dt{color:var(--muted)}dd{margin:0;font-weight:700;word-break:break-word}
       navigator.share ? h("button", { class: "btn alt", type: "button", disabled: dis, onclick: () => { navigator.share({ text: fn() }).catch(() => {}); } }, "Compartilhar") : null,
       h("button", { class: "btn alt", type: "button", disabled: dis, onclick: e => copy(fn(), e.currentTarget, box) }, "Copiar")), box];
   }
-  function warn() { return HOSTED ? null : h("p", { class: "err", style: "margin:0 0 14px" }, "⚠️ Você está vendo uma prévia do arquivo, então os convites e links não funcionam aqui. Hospede a pasta do app (Netlify Drop) e abra pelo endereço dele."); }
+  function warn() { return HOSTED ? null : h("p", { class: "err", style: "margin:0 0 14px" }, "⚠️ Você está vendo uma prévia do arquivo, então os convites e links não funcionam aqui. Abra o app pelo endereço do GitHub Pages."); }
 
   /* ---------- sorteio ---------- */
   function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const b = new Uint32Array(1); crypto.getRandomValues(b); const j = b[0] % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }

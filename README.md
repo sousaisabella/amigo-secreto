@@ -2,11 +2,13 @@
 
 Mural de amigo secreto: cada pessoa entra pelo convite, deixa dicas e links de presente, vota no dia, no local e na comida, e vê quem tirou no próprio celular, sem que ninguém mais veja (nem o organizador).
 
-## Publicar
+## Publicar (GitHub Pages)
 
-1. Arraste **a pasta inteira** (não só o `index.html`) para o [Netlify Drop](https://app.netlify.com/drop).
-   Arquivos: `index.html`, `sw.js`, `manifest.webmanifest`, `icon.svg`, `icon-192.png`, `icon-512.png`.
-2. Abra o endereço que o Netlify gerar. No celular, dá para usar "Adicionar à tela inicial".
+O app é publicado pelo GitHub Pages direto deste repositório. Basta que as mudanças cheguem ao branch configurado em **Settings → Pages** (normalmente `main`, pasta raiz).
+
+Todos estes arquivos precisam ficar juntos na raiz: `index.html`, `sw.js`, `manifest.webmanifest`, `icon.svg`, `icon-192.png`, `icon-512.png`.
+
+Funciona no endereço `https://<usuário>.github.io/amigo-secreto/` (os caminhos são relativos). No celular, dá para usar "Adicionar à tela inicial".
 
 ## Regras de segurança do Firebase (obrigatório)
 
