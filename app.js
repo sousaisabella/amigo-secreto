@@ -113,6 +113,19 @@
     } catch (e) { return null; }
   }
   const spotifyUrl = (kind, id) => "https://open.spotify.com/" + kind + "/" + id;
+  /* link de convite para colaborar: o curto (spotify.link/…) ou o da playlist com ?pt=… (o convite vai nesse parâmetro) */
+  const INVITE = /^https:\/\/(spotify\.link\/[A-Za-z0-9]+|spotify\.app\.link\/[A-Za-z0-9]+|open\.spotify\.com\/playlist\/[A-Za-z0-9]{22}\?[A-Za-z0-9=&_-]+)$/;
+  function spotifyInvite(text) {
+    let u; try { u = new URL(/^https?:\/\//i.test(String(text).trim()) ? String(text).trim() : "https://" + String(text).trim()); } catch (e) { return null; }
+    if (u.hostname === "spotify.link" || u.hostname === "spotify.app.link") {
+      const m = u.pathname.match(/^\/([A-Za-z0-9]+)\/?$/);
+      return m ? "https://" + u.hostname + "/" + m[1] : null;
+    }
+    const id = spotifyId(u.href, "playlist"), pt = u.searchParams.get("pt");
+    if (!id || !pt || !/^[A-Za-z0-9_-]{1,120}$/.test(pt)) return null;
+    const si = u.searchParams.get("si");
+    return "https://open.spotify.com/playlist/" + id + "?" + (si && /^[A-Za-z0-9_-]{1,60}$/.test(si) ? "si=" + si + "&" : "") + "pt=" + pt;
+  }
   const dock = document.getElementById("player");
   function play(kind, id, label) {
     if (!SPID.test(id) || !/^(track|playlist)$/.test(kind)) return;
@@ -654,10 +667,16 @@
   }
 
   function playlistBlock() {
-    const pl = D.meta && D.meta.pl;
-    if (!pl || !SPID.test(pl)) return null;
+    const m = D.meta || {}, pl = SPID.test(m.pl || "") ? m.pl : "", pv = INVITE.test(m.pv || "") ? m.pv : "";
+    if (!pl && !pv) return null;
     return [h("h2", {}, "🎶 Playlist da festa"),
-      spotifyCard("playlist", pl, "Playlist da festa", "Abra no Spotify para adicionar músicas, se ela for colaborativa.")];
+      h("div", { class: "sp" },
+        h("div", { class: "sp-txt" }, h("b", {}, "Playlist da festa"),
+          h("span", {}, pv ? "Toque em “Colaborar” para entrar na playlist e adicionar suas músicas." : "Ouça aqui ou abra no Spotify.")),
+        h("div", { class: "row", style: "flex-wrap:nowrap" },
+          pl ? h("button", { class: "btn" + (pv ? " alt" : ""), type: "button", onclick: () => play("playlist", pl, "Playlist da festa") }, "▶ Ouvir") : null,
+          pv ? h("a", { class: "btn sp-open", href: pv, target: "_blank", rel: "noopener noreferrer" }, "➕ Colaborar")
+             : h("a", { class: "btn alt sp-open", href: spotifyUrl("playlist", pl), target: "_blank", rel: "noopener noreferrer" }, "Spotify")))];
   }
   function revealList() {
     const P = (D.people) || {};
@@ -723,13 +742,22 @@
       h("p", {}, "Convide a galera. Cada amigo entra pelo convite e já aparece no mural."), shareRow(inviteMsg),
       h("label", { class: "lab", style: "margin-top:16px" }, "Nome da festa", h("input", { type: "text", value: str(m.t, 50), placeholder: "Ex.: Natal da família", maxlength: "50", onchange: e => write("/meta/t", "PUT", e.target.value.trim()) })),
       h("label", { class: "lab" }, "Valor sugerido", h("input", { type: "text", value: str(m.v, 40), placeholder: "Ex.: R$ 50", maxlength: "40", onchange: e => write("/meta/v", "PUT", e.target.value.trim()) })),
-      h("label", { class: "lab" }, h("span", {}, "Playlist da festa no Spotify ", h("span", { class: "opt" }, "(opcional)")),
+      h("label", { class: "lab" }, h("span", {}, "Playlist da festa no Spotify ", h("span", { class: "opt" }, "(opcional, para ouvir no app)")),
         h("input", { type: "url", value: m.pl && SPID.test(m.pl) ? spotifyUrl("playlist", m.pl) : "", placeholder: "Link da playlist", onchange: e => {
           const v = e.target.value.trim();
           if (!v) { write("/meta/pl", "DELETE", undefined, () => { msg = ""; }); return; }
-          const id = spotifyId(v, "playlist");
+          const id = spotifyId(v, "playlist"), inv = spotifyInvite(v);
+          if (inv && !id) { write("/meta/pv", "PUT", inv, () => { msg = "Esse é um link de convite: salvei no campo “Convite para colaborar”. Para tocar no app, cole aqui o link normal da playlist (⋯ → Compartilhar → Copiar link)."; }); return; }
           if (!id) { msg = "Esse não parece um link de playlist do Spotify. No Spotify: ⋯ → Compartilhar → Copiar link."; render(); return; }
-          write("/meta/pl", "PUT", id, () => { msg = ""; });
+          write("", "PATCH", inv ? { "meta/pl": id, "meta/pv": inv } : { "meta/pl": id }, () => { msg = ""; });
+        } })),
+      h("label", { class: "lab" }, h("span", {}, "Convite para colaborar ", h("span", { class: "opt" }, "(opcional, para o pessoal adicionar músicas)")),
+        h("input", { type: "url", value: INVITE.test(m.pv || "") ? m.pv : "", placeholder: "Link de “Convidar colaboradores”", onchange: e => {
+          const v = e.target.value.trim();
+          if (!v) { write("/meta/pv", "DELETE", undefined, () => { msg = ""; }); return; }
+          const inv = spotifyInvite(v);
+          if (!inv) { msg = spotifyId(v, "playlist") ? "Esse é o link normal da playlist, sem o convite. Na playlist, toque em ⋯ → “Convidar colaboradores” e copie o link." : "Esse não parece um link de convite do Spotify. Na playlist, toque em ⋯ → “Convidar colaboradores”."; render(); return; }
+          write("/meta/pv", "PUT", inv, () => { msg = ""; });
         } })));
     else if (m.v) out.push(h("p", {}, "Valor sugerido: ", h("b", {}, str(m.v, 40))));
     out.push(joinBlock(), resultBlock(), playlistBlock(),

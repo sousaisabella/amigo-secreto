@@ -98,6 +98,9 @@
           "pl": {
             ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9]{22}$/)"
           },
+          "pv": {
+            ".validate": "newData.isString() && newData.val().length <= 200 && newData.val().matches(/^https:\\/\\/(spotify\\.link\\/[A-Za-z0-9]+|spotify\\.app\\.link\\/[A-Za-z0-9]+|open\\.spotify\\.com\\/playlist\\/[A-Za-z0-9]+\\?[A-Za-z0-9=&_-]+)$/)"
+          },
           "$other": {
             ".validate": false
           }
