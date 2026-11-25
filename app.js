@@ -99,6 +99,39 @@
     return JSON.parse(td.decode(pt));
   }
 
+  /* ---------- Spotify: só links, sem login; o player só carrega quando a pessoa toca em ▶ ---------- */
+  const SPID = /^[A-Za-z0-9]{22}$/;
+  function spotifyId(text, kind) {
+    const t = String(text || "").trim();
+    let m = t.match(new RegExp("^spotify:" + kind + ":([A-Za-z0-9]{22})$"));
+    if (m) return m[1];
+    try {
+      const u = new URL(/^https?:\/\//i.test(t) ? t : "https://" + t);
+      if (u.hostname !== "open.spotify.com") return null;
+      m = u.pathname.match(new RegExp("^/(?:intl-[a-z-]+/)?" + kind + "/([A-Za-z0-9]{22})/?$"));
+      return m ? m[1] : null;
+    } catch (e) { return null; }
+  }
+  const spotifyUrl = (kind, id) => "https://open.spotify.com/" + kind + "/" + id;
+  const dock = document.getElementById("player");
+  function play(kind, id, label) {
+    if (!SPID.test(id) || !/^(track|playlist)$/.test(kind)) return;
+    document.dispatchEvent(new Event("amigo:spotify"));          // pausa a música de Natal
+    dock.replaceChildren(
+      h("div", { class: "dock-top" }, h("span", {}, "🎧 " + label),
+        h("button", { class: "x", type: "button", "aria-label": "Fechar player", onclick: () => { dock.replaceChildren(); dock.hidden = true; document.body.classList.remove("docked"); } }, "×")),
+      h("iframe", { src: "https://open.spotify.com/embed/" + kind + "/" + id, height: kind === "track" ? "80" : "152", title: "Player do Spotify: " + label,
+        allow: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture", loading: "lazy", referrerpolicy: "strict-origin-when-cross-origin" }));
+    dock.hidden = false; document.body.classList.add("docked");
+  }
+  function spotifyCard(kind, id, label, sub) {
+    return h("div", { class: "sp" },
+      h("div", { class: "sp-txt" }, h("b", {}, label), sub ? h("span", {}, sub) : null),
+      h("div", { class: "row", style: "flex-wrap:nowrap" },
+        h("button", { class: "btn", type: "button", onclick: () => play(kind, id, label) }, "▶ Ouvir"),
+        h("a", { class: "btn alt sp-open", href: spotifyUrl(kind, id), target: "_blank", rel: "noopener noreferrer" }, "Spotify")));
+  }
+
   /* ---------- banco: Firebase Realtime Database (REST + streaming, com login) ou memória ---------- */
   function setPath(root, path, val) {
     const parts = path.split("/").filter(Boolean);
@@ -617,6 +650,12 @@
       h("button", { class: "btn alt wide", type: "button", onclick: () => { reveal = false; render(); } }, "Esconder")];
   }
 
+  function playlistBlock() {
+    const pl = D.meta && D.meta.pl;
+    if (!pl || !SPID.test(pl)) return null;
+    return [h("h2", {}, "🎶 Playlist da festa"),
+      spotifyCard("playlist", pl, "Playlist da festa", "Abra no Spotify para adicionar músicas, se ela for colaborativa.")];
+  }
   function revealList() {
     const P = (D.people) || {};
     const rv = entries(D.rev).filter(e => P[e[0]] && typeof e[1] === "string" && P[e[1]]);
@@ -680,9 +719,17 @@
     if (org) out.push(
       h("p", {}, "Convide a galera. Cada amigo entra pelo convite e já aparece no mural."), shareRow(inviteMsg),
       h("label", { class: "lab", style: "margin-top:16px" }, "Nome da festa", h("input", { type: "text", value: str(m.t, 50), placeholder: "Ex.: Natal da família", maxlength: "50", onchange: e => write("/meta/t", "PUT", e.target.value.trim()) })),
-      h("label", { class: "lab" }, "Valor sugerido", h("input", { type: "text", value: str(m.v, 40), placeholder: "Ex.: R$ 50", maxlength: "40", onchange: e => write("/meta/v", "PUT", e.target.value.trim()) })));
+      h("label", { class: "lab" }, "Valor sugerido", h("input", { type: "text", value: str(m.v, 40), placeholder: "Ex.: R$ 50", maxlength: "40", onchange: e => write("/meta/v", "PUT", e.target.value.trim()) })),
+      h("label", { class: "lab" }, h("span", {}, "Playlist da festa no Spotify ", h("span", { class: "opt" }, "(opcional)")),
+        h("input", { type: "url", value: m.pl && SPID.test(m.pl) ? spotifyUrl("playlist", m.pl) : "", placeholder: "Link da playlist", onchange: e => {
+          const v = e.target.value.trim();
+          if (!v) { write("/meta/pl", "DELETE", undefined, () => { msg = ""; }); return; }
+          const id = spotifyId(v, "playlist");
+          if (!id) { msg = "Esse não parece um link de playlist do Spotify. No Spotify: ⋯ → Compartilhar → Copiar link."; render(); return; }
+          write("/meta/pl", "PUT", id, () => { msg = ""; });
+        } })));
     else if (m.v) out.push(h("p", {}, "Valor sugerido: ", h("b", {}, str(m.v, 40))));
-    out.push(joinBlock(), resultBlock(),
+    out.push(joinBlock(), resultBlock(), playlistBlock(),
       h("h2", {}, "🎁 Quem participa (" + n + ")"),
       n ? [h("p", { class: "hint", style: "margin:0 0 4px" }, "Dicas de presente de quem quis deixar uma."), h("ul", {}, P.map(personCard))] : h("p", { class: "hint" }, "Ninguém entrou ainda."),
       pollSection("📅 Qual dia?", "d", "date", "", "Sugira uma data e todo mundo vota nos dias que preferir."),
@@ -824,6 +871,7 @@
   /* o navegador só deixa tocar som depois de um toque: se estava ligada, volta no primeiro toque */
   const first = e => { if (e.target === btn) return; document.removeEventListener("pointerdown", first, true); if (on && !timer) start(); };
   document.addEventListener("pointerdown", first, true);
+  document.addEventListener("amigo:spotify", () => { if (on) { on = false; stop(); paint(); } });
   document.addEventListener("visibilitychange", () => { if (!ctx) return; document.hidden ? ctx.suspend() : (on && ctx.resume()); });
   paint();
 })();
