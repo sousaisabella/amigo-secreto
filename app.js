@@ -338,7 +338,11 @@
       S.rooms[room] = { db: DB, room, org: true }; S.cur = room; save();
       uapi("/" + room, "PATCH", { org: true, t: "" }).catch(() => {});
       resetRoom();
-    } catch (e) { msg = "Não consegui criar a festa. Confira sua conexão."; }
+    } catch (e) {
+      msg = e.status === 401 || e.status === 403 ? "O banco recusou a criação da festa (permissão negada). Se você é a administradora, confira se as regras novas do Firebase foram publicadas."
+        : e.status ? "O banco respondeu com erro (HTTP " + e.status + "). Tente de novo em instantes."
+        : "Não consegui falar com o banco. Confira sua conexão.";
+    }
     work = ""; render(true); if (S.cur) live();
   }
   /* organizador da versão anterior assume a festa com a conta Google */
