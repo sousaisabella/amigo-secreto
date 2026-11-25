@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#D62839">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://apis.google.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://amigo-secreto-64e8b-default-rtdb.firebaseio.com https://*.firebaseio.com wss://*.firebaseio.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com; frame-src https://amigo-secreto-64e8b.firebaseapp.com https://accounts.google.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://apis.google.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://amigo-secreto-64e8b-default-rtdb.firebaseio.com https://*.firebaseio.com wss://*.firebaseio.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com; frame-src https://amigo-secreto-64e8b.firebaseapp.com https://accounts.google.com https://open.spotify.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Amigo secreto</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -25,7 +25,8 @@ body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 17p
 body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.55;background-image:radial-gradient(circle,var(--flake) 2px,transparent 2.5px),radial-gradient(circle,var(--flake) 1.2px,transparent 1.8px);background-size:97px 97px,151px 151px;background-position:0 0,40px 60px;animation:snow 30s linear infinite}
 @keyframes snow{to{background-position:30px 97px,10px 211px}}
 .cane{height:12px;background:repeating-linear-gradient(45deg,var(--accent) 0 14px,#fff 14px 28px)}
-main{position:relative;max-width:520px;margin:0 auto;padding:24px 18px 100px}
+main{position:relative;max-width:520px;margin:0 auto;padding:24px 18px 56px}
+@media (max-width:620px){main h1:first-child{padding-right:52px}}
 h1,h2,.fun{font-family:"Fredoka","Nunito",system-ui,sans-serif}
 h1{font-size:clamp(34px,10vw,46px);line-height:1.05;margin:0 0 8px;font-weight:700;word-break:break-word}
 h2{font-size:22px;margin:30px 0 8px;font-weight:700}
@@ -83,9 +84,25 @@ dt{color:var(--muted)}dd{margin:0;font-weight:700;word-break:break-word}
 .qa p{margin:0 0 2px;color:var(--ink)}
 .qa .hint{margin:0 0 6px}
 .qa .row{margin:4px 0 8px;flex-wrap:nowrap}
-.music{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;width:56px;height:56px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:var(--ink);font-size:26px;line-height:1;box-shadow:0 4px 0 var(--line);display:flex;align-items:center;justify-content:center}
+.music{position:absolute;right:16px;top:calc(26px + env(safe-area-inset-top,0px));z-index:5;width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:var(--ink);font-size:20px;line-height:1;box-shadow:0 3px 0 var(--line);display:flex;align-items:center;justify-content:center}
 .music[aria-pressed="true"]{background:var(--accent);border-color:var(--accent-d);box-shadow:0 4px 0 var(--accent-d)}
-.acct{font-size:14px;color:var(--muted);margin:0 0 10px}.acct .link{min-height:32px;font-size:14px;padding:0}
+.acct{font-size:14px;color:var(--muted);margin:6px 0 4px}.acct .link{min-height:32px;font-size:14px;padding:0}
+.link.inline{min-height:0;padding:0;font:inherit;color:inherit;font-weight:700}
+.opt{font-weight:400;color:var(--muted)}
+.nohint{margin:0;color:var(--muted);font-style:italic}
+.box.ok{border-style:solid;border-color:var(--ok)}
+.box.join{border-style:solid;border-color:var(--line);margin-top:18px}
+.foot details{margin-top:4px}.foot .col{display:flex;flex-direction:column;align-items:flex-start}
+.link.danger{color:var(--accent)}
+.sp{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:10px 12px}
+.sp-txt{display:flex;flex-direction:column;min-width:0}.sp-txt b{font:700 17px "Fredoka",sans-serif}.sp-txt span{font-size:14px;color:var(--muted)}
+.sp .btn{min-height:44px;padding:0 16px;font-size:15px}
+.sp-open{display:inline-flex;align-items:center;text-decoration:none}
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:6;width:100%;max-width:520px;background:var(--surface);border:2px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;padding:6px 10px calc(8px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 20px rgba(0,0,0,.12)}
+.dock-top{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;color:var(--muted)}
+.dock .x{width:36px;height:36px}
+.dock iframe{display:block;width:100%;border:0;border-radius:12px}
+body.docked main{padding-bottom:230px}
 .music:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
 @media (prefers-reduced-motion:reduce){.tag,body::before{animation:none}}
 </style>
@@ -93,6 +110,7 @@ dt{color:var(--muted)}dd{margin:0;font-weight:700;word-break:break-word}
 <body>
 <div class="cane"></div>
 <main id="app"></main>
+<div id="player" class="dock" hidden></div>
 <button class="music" id="music" type="button" aria-pressed="false" aria-label="Música de fundo" title="Música de fundo">🔇</button>
 <script src="vendor/firebase-auth.js" defer></script>
 <script src="app.js" defer></script>

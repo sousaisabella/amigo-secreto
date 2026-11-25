@@ -1,6 +1,6 @@
 /* Cache simples para o app abrir rápido e instalar na tela inicial.
    Busca sempre a versão mais nova na rede; usa o cache só sem internet. */
-const CACHE = "amigo-secreto-v8";
+const CACHE = "amigo-secreto-v11";
 const FILES = ["./", "index.html", "app.js", "vendor/firebase-auth.js", "privacidade.html", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png",
   "fonts/nunito-latin-400-normal.woff2", "fonts/nunito-latin-700-normal.woff2", "fonts/fredoka-latin-500-normal.woff2", "fonts/fredoka-latin-700-normal.woff2"];
 self.addEventListener("install", e => {
