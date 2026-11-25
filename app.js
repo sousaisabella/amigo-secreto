@@ -18,7 +18,7 @@
   let U = null, ready = false, authErr = false, TOK = "";
   /* estado da sala */
   let offT = null, D = null, es = null, pollT = null, snap = "", dirty = false, ptr = false, off = false, seq = 0;
-  let msg = "", work = "", reveal = false, mine = { key: "" }, hintGoogle = false;
+  let msg = "", work = "", reveal = false, mine = { key: "" };
   const once = {};
   const dr = { n: "", w: "", d: "", p: "", f: "", lt: "", lu: "", q: {}, a: {} };
   /* links de resultado antigos (#x…) */
@@ -292,7 +292,7 @@
   }
 
   /* ---------- navegação ---------- */
-  function resetRoom() { D = null; snap = ""; mine = { key: "" }; reveal = false; msg = ""; hintGoogle = false; OPEN.clear(); }
+  function resetRoom() { D = null; snap = ""; mine = { key: "" }; reveal = false; msg = ""; OPEN.clear(); }
   function openRoom(id) { S.cur = id; save(); resetRoom(); render(true); live(); }
   function home() { stopLive(); S.cur = ""; save(); resetRoom(); render(true); }
   function forget(id) {
@@ -439,7 +439,6 @@
       await api("/people/" + uid, "PUT", p);
       r.sk = k.sk; r.skUid = uid; save(); dr.w = ""; dr.n = "";
       if (U && !U.anon) uapi("/" + r.room, "PATCH", { sk: k.sk, t: str(r.t, 50) || "" }).catch(() => {});
-      hintGoogle = !!(U && U.anon);
     } catch (e) { msg = e.status === 401 || e.status === 403 ? "Esta festa não aceita novas pessoas agora." : "Não consegui entrar. Confira sua conexão."; }
     work = ""; refresh(); render();
   }
@@ -489,8 +488,8 @@
     return h("div", { class: "box" },
       h("p", { style: "margin:0 0 10px" }, text),
       h("div", { class: "row" },
-        h("button", { class: "btn", type: "button", disabled: work ? "disabled" : null, onclick: async () => { work = "login"; render(); await google(); work = ""; hintGoogle = false; render(); } }, work === "login" ? "Abrindo…" : "Entrar com Google"),
-        hintGoogle ? h("button", { class: "btn alt", type: "button", onclick: () => { hintGoogle = false; render(); } }, "Agora não") : null));
+        h("button", { class: "btn", type: "button", disabled: work ? "disabled" : null, onclick: async () => { work = "login"; render(); await google(); work = ""; render(); } }, work === "login" ? "Abrindo…" : "Entrar com Google"),
+));
   }
   function linkList(p) {
     const l = entries(p && p.l).filter(e => e[1] && /^https?:\/\//i.test(str(e[1].u, 300)));
@@ -512,11 +511,11 @@
         h("b", {}, (o.k === top ? "🏆 " : "") + (key === "d" ? fmtDate(o.t) : o.t)),
         h("span", { class: "row", style: "align-items:center" },
           h("span", { class: "seen" }, o.n + (o.n === 1 ? " voto" : " votos")),
-          h("button", { class: "btn" + (o.mine ? "" : " alt"), type: "button", disabled: ok ? null : "disabled", onclick: () => write("/votes/" + key + "/" + o.k + "/" + uid, o.mine ? "DELETE" : "PUT", true) }, o.mine ? "✓ Meu voto" : "Votar"),
+          !ok ? null : h("button", { class: "btn" + (o.mine ? "" : " alt"), type: "button", onclick: () => write("/votes/" + key + "/" + o.k + "/" + uid, o.mine ? "DELETE" : "PUT", true) }, o.mine ? "✓ Meu voto" : "Votar"),
           org ? h("button", { class: "x", type: "button", "aria-label": "Remover opção", onclick: () => write("", "PATCH", { [key + "/" + o.k]: null, ["votes/" + key + "/" + o.k]: null }) }, "×") : null)))),
-      list.length ? null : h("p", { class: "hint" }, hint),
-      h("div", { class: "row", style: "flex-wrap:nowrap;margin-top:10px" }, inp,
-        h("button", { class: "btn", type: "button", disabled: ok ? null : "disabled", onclick: () => {
+      list.length ? null : h("p", { class: "hint" }, ok ? hint : "Ninguém sugeriu ainda."),
+      !ok ? (list.length ? h("p", { class: "hint" }, "Participe do sorteio para votar e sugerir.") : null) : h("div", { class: "row", style: "flex-wrap:nowrap;margin-top:10px" }, inp,
+        h("button", { class: "btn", type: "button", onclick: () => {
           const v = inp.value.trim(); if (!v) return;
           if (list.some(o => o.t.toLowerCase() === v.toLowerCase())) { dr[key] = ""; inp.value = ""; return; }
           write("/" + key, "POST", { t: v.slice(0, 60), by: nm(me()), u: uid }, () => { dr[key] = ""; });
@@ -545,7 +544,7 @@
       h("div", { class: "top" }, h("b", {}, "🎁 " + nm(p) + (isMe ? " (você)" : "") + (legacy ? " · versão antiga" : "")),
         org && !isMe ? h("button", { class: "x", type: "button", "aria-label": "Remover " + nm(p), onclick: () => { if (confirm("Remover " + nm(p) + " da festa?")) removePerson(id); } }, "×") : null),
       isMe ? [
-        h("input", { type: "text", value: str(p.w, 120), placeholder: "Sua dica de presente", "aria-label": "Sua dica de presente", maxlength: "120", onchange: ev => write("/people/" + id + "/w", "PUT", ev.target.value.trim()) }),
+        h("input", { type: "text", value: str(p.w, 120), placeholder: "Quer dar uma dica? (opcional)", "aria-label": "Sua dica de presente (opcional)", maxlength: "120", onchange: ev => write("/people/" + id + "/w", "PUT", ev.target.value.trim()) }),
         links.length ? h("ul", { class: "links" }, links.map(l => h("li", {},
           /^https?:\/\//i.test(str(l[1].u, 300)) ? h("a", { class: "lnk", href: str(l[1].u, 300), target: "_blank", rel: "noopener noreferrer nofollow" }, "🔗 " + (str(l[1].t, 60) || "link")) : h("span", {}, str(l[1].t, 60)),
           h("button", { class: "x", type: "button", "aria-label": "Remover link", onclick: () => write("/people/" + id + "/l/" + l[0], "DELETE") }, "×")))) : null,
@@ -554,7 +553,7 @@
           h("div", { class: "row", style: "flex-wrap:nowrap" },
             h("input", { type: "url", value: dr.lu, placeholder: "https://…", maxlength: "300", "aria-label": "Link do item", oninput: ev => { dr.lu = ev.target.value; } }),
             h("button", { class: "btn", type: "button", onclick: () => addLink(id) }, "Salvar"))) : null
-      ] : [h("p", { style: "margin:0;color:var(--ink)" }, str(p.w, 120) || "Ainda sem dica"), linkList(p)],
+      ] : [str(p.w, 120) ? h("p", { style: "margin:0;color:var(--ink)" }, str(p.w, 120)) : h("p", { class: "nohint" }, "Topa qualquer surpresa 🎁"), linkList(p)],
       qs2.length ? h("div", { class: "qa" }, qs2.map(q => qaItem(q, isMe))) : null,
       !isMe && ok && !legacy ? det("q" + id, "❓ Perguntar anonimamente",
         h("div", { class: "row", style: "flex-wrap:nowrap" },
@@ -566,18 +565,26 @@
   }
 
   function joinBlock() {
-    if (me()) return hintGoogle && U && U.anon ? googleBox("Pronto, você está no mural! Para ver seu resultado em outro aparelho (ou se limpar o navegador), entre com o Google.") : null;
+    if (me()) {
+      if (D.meta && D.meta.drawn) return null;
+      return h("div", { class: "box ok" },
+        h("p", { style: "margin:0" }, h("b", {}, "✅ Você está no sorteio!")),
+        h("p", { style: "margin:6px 0 0" }, "Quando o organizador sortear, seu amigo secreto aparece aqui nesta página. Só você vai ver."),
+        U && U.anon ? h("p", { class: "hint", style: "margin-top:10px" }, "Quer abrir em outro aparelho? ",
+          h("button", { class: "link inline", type: "button", disabled: work ? "disabled" : null, onclick: async () => { work = "login"; render(); await google(); work = ""; render(); } }, "Entrar com Google")) : null);
+    }
     const r = R(), m = D.meta || {};
     if (!m.owner) return r.lorg ? null : h("div", { class: "box warnbox" }, h("p", { style: "margin:0" }, "Esta festa veio da versão anterior do app e está esperando o organizador reativá-la."));
     const P = people(), dis = work || !U ? "disabled" : null;
-    return [
-      h("h2", {}, "👋 Entre no mural"),
+    return h("div", { class: "box join" }, [
+      h("h2", { style: "margin-top:0" }, "🎁 Participe do sorteio"),
+      h("p", {}, "É só colocar seu nome. A dica de presente é opcional e dá para adicionar depois."),
       h("label", { class: "lab" }, "Seu nome", h("input", { type: "text", value: dr.n, maxlength: "30", autocomplete: "given-name", oninput: e => { dr.n = e.target.value; } })),
-      h("label", { class: "lab" }, "Sua dica de presente", h("input", { type: "text", value: dr.w, maxlength: "120", placeholder: "Ex.: livros, café, plantas", oninput: e => { dr.w = e.target.value; } })),
-      h("button", { class: "btn", type: "button", disabled: dis, onclick: joinNow }, work === "join" ? "Entrando…" : "Entrar no mural"),
-      P.length && U && U.anon ? [h("p", { class: "hint", style: "margin-top:14px" }, "Já entrou por outro aparelho usando o Google?"),
-        h("button", { class: "btn alt", type: "button", style: "margin-top:8px", disabled: work ? "disabled" : null, onclick: async () => { work = "login"; render(); await google(); work = ""; render(); } }, "Entrar com Google")] : null
-    ];
+      h("label", { class: "lab" }, h("span", {}, "Dica de presente ", h("span", { class: "opt" }, "(opcional)")), h("input", { type: "text", value: dr.w, maxlength: "120", placeholder: "Ex.: livros, café, plantas", oninput: e => { dr.w = e.target.value; } })),
+      h("button", { class: "btn wide", type: "button", style: "margin-top:6px", disabled: dis, onclick: joinNow }, work === "join" ? "Entrando…" : "Quero participar"),
+      P.length && U && U.anon ? h("p", { class: "hint", style: "margin-top:12px;text-align:center" }, "Já participa por outro aparelho? ",
+        h("button", { class: "link inline", type: "button", disabled: work ? "disabled" : null, onclick: async () => { work = "login"; render(); await google(); work = ""; render(); } }, "Entrar com Google")) : null
+    ]);
   }
 
   function resultBlock() {
@@ -595,7 +602,7 @@
       h("p", {}, "Só você vê este resultado. Confira se ninguém está olhando."),
       h("button", { class: "btn wide", type: "button", style: "margin-top:4px", onclick: () => { reveal = true; render(); } }, "🎁 Mostrar quem eu tirei")];
     const rows = [];
-    if (rp) { if (rp.w) rows.push(["Dica", str(rp.w, 120)]); const lk = linkList(rp); if (lk) rows.push(["Lista", lk]); }
+    if (rp) { rows.push(["Dica", str(rp.w, 120) || "Não deixou dica. Vale a criatividade ✨"]); const lk = linkList(rp); if (lk) rows.push(["Lista", lk]); }
     if (m.v) rows.push(["Valor", str(m.v, 40)]);
     const dd = leadRaw("d"), pl = leadRaw("p"), fd = leadRaw("f");
     if (dd) rows.push(["Data", fmtDate(dd)]);
@@ -648,20 +655,23 @@
   function footer() {
     const org = isOrg();
     return h("div", { class: "foot" },
-      h("div", { class: "row", style: "margin-top:8px" },
-        h("button", { class: "link", type: "button", onclick: home }, "Minhas festas"),
-        me() ? h("button", { class: "link", type: "button", onclick: eraseMe }, "Apagar meus dados") : null,
-        org ? h("button", { class: "link", type: "button", onclick: eraseRoom }, "Apagar a festa") : null,
-        h("a", { class: "link", href: "privacidade.html", style: "display:inline-flex;align-items:center" }, "Privacidade"),
-        h("button", { class: "link", type: "button", onclick: () => { if (confirm("Esquecer esta festa neste aparelho?" + (U && U.anon && me() ? " Sem login, você não conseguirá voltar a ela como você." : ""))) forget(S.cur); } }, "Esquecer neste aparelho")));
+      h("div", { class: "row" },
+        h("button", { class: "link", type: "button", onclick: home }, "← Minhas festas"),
+        h("a", { class: "link", href: "privacidade.html", style: "display:inline-flex;align-items:center" }, "Privacidade")),
+      det("opts", "⚙️ Mais opções",
+        account(),
+        h("div", { class: "col" },
+          me() ? h("button", { class: "link", type: "button", onclick: eraseMe }, "Apagar meus dados desta festa") : null,
+          org ? h("button", { class: "link danger", type: "button", onclick: eraseRoom }, "Apagar a festa para todo mundo") : null,
+          h("button", { class: "link", type: "button", onclick: () => { if (confirm("Esquecer esta festa neste aparelho?" + (U && U.anon && me() ? " Sem login, você não conseguirá voltar a ela como você." : ""))) forget(S.cur); } }, "Esquecer esta festa neste aparelho"))));
   }
 
   function roomView() {
     if (!ready) return [h("p", {}, "Conectando…")];
     if (authErr) return [h("h1", {}, "🎄 Amigo Secreto"), h("p", { class: "err" }, "Não consegui conectar. Confira sua internet e recarregue a página.")];
-    if (!D) return [account(), h("p", {}, "Carregando o mural…")];
+    if (!D) return [h("p", {}, "Carregando…")];
     const r = R(), m = D.meta || {}, P = people(), n = P.length, org = isOrg();
-    const out = [account(), h("h1", {}, "🎄 " + (str(m.t, 50) || "Amigo Secreto")), warn(),
+    const out = [h("h1", {}, "🎄 " + (str(m.t, 50) || "Amigo Secreto")), warn(),
       h("p", { class: "err", "aria-live": "polite", style: "margin:0 0 8px" }, msg || (off ? "Sem conexão com o banco. Tentando de novo…" : "")),
       countdown()];
     if (!m.owner && r.lorg) out.push(h("div", { class: "box" },
@@ -672,9 +682,9 @@
       h("label", { class: "lab", style: "margin-top:16px" }, "Nome da festa", h("input", { type: "text", value: str(m.t, 50), placeholder: "Ex.: Natal da família", maxlength: "50", onchange: e => write("/meta/t", "PUT", e.target.value.trim()) })),
       h("label", { class: "lab" }, "Valor sugerido", h("input", { type: "text", value: str(m.v, 40), placeholder: "Ex.: R$ 50", maxlength: "40", onchange: e => write("/meta/v", "PUT", e.target.value.trim()) })));
     else if (m.v) out.push(h("p", {}, "Valor sugerido: ", h("b", {}, str(m.v, 40))));
-    out.push(resultBlock(), joinBlock(),
-      h("h2", {}, "🎁 Mural de dicas (" + n + ")"),
-      n ? h("ul", {}, P.map(personCard)) : h("p", { class: "hint" }, "Ninguém entrou ainda."),
+    out.push(joinBlock(), resultBlock(),
+      h("h2", {}, "🎁 Quem participa (" + n + ")"),
+      n ? [h("p", { class: "hint", style: "margin:0 0 4px" }, "Dicas de presente de quem quis deixar uma."), h("ul", {}, P.map(personCard))] : h("p", { class: "hint" }, "Ninguém entrou ainda."),
       pollSection("📅 Qual dia?", "d", "date", "", "Sugira uma data e todo mundo vota nos dias que preferir."),
       pollSection("📍 Onde?", "p", "text", "Sugerir um local", "Sugira um local para a festa."),
       pollSection("🍽️ O que vamos comer?", "f", "text", "Sugerir um tipo de comida", "Sugira o que vai rolar de comida."),
@@ -686,13 +696,13 @@
     const rs = Object.values(S.rooms).filter(x => x && x.room);
     const needLogin = !U || U.anon;
     return [
-      account(),
       h("h1", {}, "🎄 Amigo Secreto"),
       h("p", {}, "Crie a festa, convide a galera e deixe todo mundo adicionar dicas, votar no mural e ver quem tirou, sem ninguém espiar."),
       h("p", { class: "err", "aria-live": "polite" }, authErr ? "Não consegui conectar. Confira sua internet e recarregue a página." : msg),
       h("button", { class: "btn wide", type: "button", disabled: work || !ready || authErr ? "disabled" : null, onclick: create }, work === "create" ? "Criando…" : needLogin ? "Entrar com Google e criar uma festa" : "Criar uma festa"),
       needLogin ? h("p", { class: "hint", style: "text-align:center" }, "Para criar uma festa é preciso entrar com o Google. Os convidados entram sem login.") : null,
-      h("p", { class: "hint", style: "margin-top:18px;text-align:center" }, "Sem anúncios e sem rastreamento. ", h("a", { href: "privacidade.html", style: "color:inherit" }, "Política de privacidade")),
+      h("div", { style: "margin-top:18px;text-align:center" }, account()),
+      h("p", { class: "hint", style: "margin-top:8px;text-align:center" }, "Sem anúncios e sem rastreamento. ", h("a", { href: "privacidade.html", style: "color:inherit" }, "Política de privacidade")),
       rs.length ? [h("h2", {}, "🎄 Minhas festas"), h("ul", {}, rs.map(x => h("li", { class: "mini" },
         h("b", {}, (x.t || "Festa " + x.room.slice(0, 4)) + (x.org ? " · organizador" : "")),
         h("span", { class: "row", style: "align-items:center" },
