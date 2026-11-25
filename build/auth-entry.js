@@ -28,7 +28,15 @@ const emit = (u, err) => listeners.forEach(fn => { try { fn(info(u), err); } cat
 async function withGoogle(viaPopup, credential) {
   const u = auth.currentUser;
   try {
-    if (u && u.isAnonymous) return (credential ? await linkWithCredential(u, credential) : await linkWithPopup(u, viaPopup)).user;
+    if (u && u.isAnonymous) {
+      const r = credential ? await linkWithCredential(u, credential) : await linkWithPopup(u, viaPopup);
+      /* depois de ligar, entra de novo com a mesma credencial do Google: a conta é a mesma, mas o token
+         passa a dizer "entrou com Google" (as regras do banco exigem isso para criar festa) */
+      const again = credential || GoogleAuthProvider.credentialFromResult(r);
+      if (again) { try { return (await signInWithCredential(auth, again)).user; } catch (e) {} }
+      await r.user.getIdToken(true);
+      return r.user;
+    }
     return (credential ? await signInWithCredential(auth, credential) : await signInWithPopup(auth, viaPopup)).user;
   } catch (e) {
     /* essa conta Google já tem cadastro: entra nela (os dados anônimos deste aparelho ficam para trás) */
