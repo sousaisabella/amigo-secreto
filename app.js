@@ -213,15 +213,18 @@
   function flush() { if (dirty && !typing() && !ptr) render(); }
 
   /* ---------- conta ---------- */
+  /* navegadores dentro de apps (Instagram, Facebook…): o Google bloqueia o login neles */
+  const INAPP = /FBAN|FBAV|FB_IAB|Instagram|Line\/|Snapchat|TikTok|musical_ly|BytedanceWebview|; wv\)/i.test(navigator.userAgent || "");
   async function google() {
     if (!window.FBAuth) { msg = "Não consegui carregar o login. Confira sua conexão."; render(); return false; }
+    if (INAPP && !EMU) { msg = "O Google não permite entrar por dentro deste app. Toque em ⋯ e escolha “Abrir no navegador” (Safari ou Chrome)."; render(); return false; }
     try { await window.FBAuth.google(); return true; }
     catch (e) {
       const c = e && e.code || "";
       msg = c === "auth/popup-closed-by-user" || c === "auth/cancelled-popup-request" ? ""
         : c === "auth/popup-blocked" ? "O navegador bloqueou a janela do Google. Permita pop-ups para este site e tente de novo."
         : c === "auth/operation-not-supported-in-this-environment" || c === "auth/web-storage-unsupported" ? "Este navegador não permite o login do Google. Abra o link no Chrome ou no Safari."
-        : "Não consegui entrar com o Google. Tente de novo.";
+        : "Não consegui entrar com o Google (" + (c || "erro") + "). Tente de novo ou abra no Safari/Chrome.";
       render(); return false;
     }
   }

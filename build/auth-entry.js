@@ -18,6 +18,39 @@ const config = {
 };
 
 let auth = null;
+
+/* Login do Google pelo Google Identity Services (accounts.google.com): a janela devolve o resultado direto
+   para o site, sem a página intermediária do firebaseapp.com, que falha no Chrome do iPhone. */
+const GOOGLE_CLIENT_ID = "938460990493-ph3dlnmjk0jbfnksqogu8sl1cm4kc9nh.apps.googleusercontent.com";
+let tokenClient = null, waiting = null;
+function loadGis() {
+  if (document.getElementById("gis")) return;
+  const s = document.createElement("script");
+  s.id = "gis"; s.src = "https://accounts.google.com/gsi/client"; s.async = true; s.onload = initGis;
+  document.head.appendChild(s);
+}
+function initGis() {
+  const g = window.google && window.google.accounts && window.google.accounts.oauth2;
+  if (tokenClient || !g) return;
+  const fail = code => { const w = waiting; waiting = null; if (w) w.reject(Object.assign(new Error(code), { code })); };
+  tokenClient = g.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: "openid email profile",
+    callback: r => {
+      if (!r || r.error || !r.access_token) return fail(r && r.error === "access_denied" ? "auth/popup-closed-by-user" : "auth/gis-" + ((r && r.error) || "falhou"));
+      const w = waiting; waiting = null; if (w) w.resolve(r.access_token);
+    },
+    error_callback: e => fail(e && e.type === "popup_closed" ? "auth/popup-closed-by-user" : e && e.type === "popup_failed_to_open" ? "auth/popup-blocked" : "auth/gis-" + ((e && e.type) || "falhou"))
+  });
+}
+/* precisa ser chamado direto no toque (sem await antes), senão o navegador bloqueia a janela */
+function gisToken() {
+  return new Promise((resolve, reject) => {
+    if (waiting) waiting.reject(Object.assign(new Error("cancelado"), { code: "auth/cancelled-popup-request" }));
+    waiting = { resolve, reject };
+    tokenClient.requestAccessToken({ prompt: "select_account" });
+  });
+}
 const listeners = [];
 let beforeSwitch = null;   /* o app tira a pessoa anônima das festas antes da troca de conta */
 const fromProvider = (u, k) => ((u.providerData || []).find(p => p && p[k]) || {})[k] || "";
@@ -55,6 +88,7 @@ window.FBAuth = {
     auth = getAuth(initializeApp(config));
     auth.languageCode = "pt-BR";
     if (emulator) connectAuthEmulator(auth, "http://127.0.0.1:9099", { disableWarnings: true });
+    else loadGis();
     onIdTokenChanged(auth, u => {
       if (!u) { signInAnonymously(auth).catch(e => emit(null, e)); return; }
       emit(u);
@@ -65,9 +99,17 @@ window.FBAuth = {
   user() { return info(auth && auth.currentUser); },
   token(force) { return auth && auth.currentUser ? auth.currentUser.getIdToken(!!force) : Promise.resolve(""); },
   async google() {
-    const p = new GoogleAuthProvider();
-    p.setCustomParameters({ prompt: "select_account" });
-    const u = await withGoogle(p);
+    initGis();
+    let u;
+    if (tokenClient) {
+      const accessToken = await gisToken();
+      u = await withGoogle(null, GoogleAuthProvider.credential(null, accessToken));
+    } else {
+      /* plano B: a biblioteca do Google não carregou; usa a janela do Firebase */
+      const p = new GoogleAuthProvider();
+      p.setCustomParameters({ prompt: "select_account" });
+      u = await withGoogle(p);
+    }
     emit(u); return info(u);
   },
   /* só no emulador local, para os testes automáticos */
