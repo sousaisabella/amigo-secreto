@@ -51,7 +51,8 @@ Limitação conhecida: sem login (Firebase Auth), o banco não tem como saber qu
 1. **Authentication → Método de login:** ative **Anônimo** e **Google**.
 2. **Authentication → Configurações → Domínios autorizados:** adicione `sousaisabella.github.io`.
 3. **Realtime Database → Regras:** cole `database.rules.json` e publique **antes** de publicar esta versão do site.
-4. Recomendado: no [Google Cloud Console → Credenciais](https://console.cloud.google.com/apis/credentials?project=amigo-secreto-64e8b), restrinja a chave de API "Browser key" a referenciadores HTTP `https://sousaisabella.github.io/*`.
+4. **Login com Google (Google Identity Services):** no [Google Cloud Console → Credenciais](https://console.cloud.google.com/apis/credentials?project=amigo-secreto-64e8b), abra o cliente OAuth **"Web client (auto created by Google Service)"** e adicione `https://sousaisabella.github.io` em **Origens JavaScript autorizadas**. Sem isso, a janela do Google mostra `origin_mismatch`. O app usa esse cliente em vez da página do `firebaseapp.com`, que falha no Chrome do iPhone.
+5. Recomendado: no [Google Cloud Console → Credenciais](https://console.cloud.google.com/apis/credentials?project=amigo-secreto-64e8b), restrinja a chave de API "Browser key" a referenciadores HTTP `https://sousaisabella.github.io/*`.
 
 A `apiKey` em `build/auth-entry.js` **não é segredo**: ela só identifica o projeto. A proteção vem das regras.
 
